@@ -2,6 +2,8 @@ import { useState } from 'react'
 import React,{Fragment} from 'react'
 import Combinacion from './components/Combinacion'
 import Fechas from './components/Fechas'
+// import Hello from "./components/Users"
+import Login from './components/Login'
 import{
   Routes,
   Route,
@@ -16,31 +18,31 @@ import{
 //   }
 // ])
 const Hola =()=>{
-  return ( <h1>Que pasa</h1>)
+  return ( <h1>Que pasa eqeq</h1>)
 }
 
 
 function App() {
 
   return (
-    <Fragment>
-        <Hola/>
+    <>
+        
         <Routes>
-          
           <Route path='/' element={<Combinacion/>}>
-            <Route path='comida' element={<h1>Esta es la lista de comida</h1>}></Route>
-            <Route path='about' element={<h1>Nosotros somos una compañia</h1>}></Route>
+          
           </Route>
-          <Route path='/desastre' element={<div>
-            <h1>Hola que haces</h1>
-            <Fechas/>
-            <Link to="comida">Link a comida</Link>
-          </div>}>
-            <Route path='comida' element={<h1>Esta es la lista de comida</h1>}></Route>
-            <Route path='about' element={<h1>Nosotros somos una compañia</h1>}></Route>
-          </Route>
+          <Route path='login' element={<Login/>}></Route>
+          {/* <Route path='user' element={<Hello/>}></Route>   */}
+           <Route path="el"element={<div>
+            <details>
+            <summary>Da Click Para Abrir</summary>
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+          </details>
+           </div>}>
+
+           </Route>
         </Routes>
-      </Fragment>
+      </>
   )
 }
 
