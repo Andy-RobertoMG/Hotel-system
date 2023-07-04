@@ -87,5 +87,6 @@ const Permission = sequelize.define('Permission', {
   tableName: 'Permission',
   timestamps: false,
 });
-Users.belongsTo(Permission, { foreignKey: 'per_id' });
+// Users.belongsTo(Permission, { foreignKey: 'per_id' });
+Users.hasOne(Permission,{foreignKey:'per_id'})
 export default {Rol,Users,Permission};
