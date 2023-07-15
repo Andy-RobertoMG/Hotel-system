@@ -1,0 +1,305 @@
+.sidebar{
+  
+  background-color: #222222;
+  display: flex;
+  flex-direction: column;
+  margin: 0%;
+  align-content: space-around;
+  width: 100%;
+  height: 100%;
+  /* overflow: scroll; */
+  box-sizing: border-box; /*Hace que si uno aumenta el tamaño de algo adrentro no aumenta el tamaño de la caja, por ejemplo padding */
+  padding: 1rem;
+  gap:2rem;
+  
+  /* overflow-y: scroll; */
+}
+button{
+  padding: 0;
+  background: none;
+  border: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  /* background-color: #222222; */
+  
+}
+.father{
+  position: relative;
+  width: 100%;
+  height: 2rem;
+  box-sizing: border-box;
+
+  /* background-color: blue; */
+}
+.box_toggle{
+  position: absolute;
+  height: 1.6rem;
+  /* background-color: brown; */
+  width: 1.6rem;
+  /* position: absolute; */
+  /* left: 50%; */
+  left: 0;
+  background-color: none;
+  transform:translateX(0%);
+  display: flex;
+  align-items: center;
+  
+  transition: all .5s;
+}
+.box_toggle.collapse_sb{
+  /* position: absolute; */
+  margin-left: auto;
+  margin-right: auto;
+  transform: translateX(-50%);
+  left: 50%;
+  /* width: 100%; */
+  max-width: 1000px; /* Ajusta este valor según tus necesidades */
+  box-sizing: border-box;
+
+  
+  transition: all 1s;
+}
+
+
+.test_1{
+  /* height: 20rem; */
+  /* overflow-y:scroll; */
+  /* overflow-x:hidden; */
+}
+.user-img{
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  overflow:hidden;/*se utiliza para controlar el comportamiento del desbordamiento de contenido en un contenedor. Cuando se establece en hidden, cualquier contenido que exceda los límites del contenedor se oculta y no se muestra.*/
+}
+.user-img img{
+  width: 100%;
+  object-fit: cover;
+
+}
+.sidebar .head{
+  display: flex;
+  gap:20px;
+}
+
+/*                                   */
+
+.user-details .title,
+.menu .title{
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  color:white;
+  margin-bottom: .5rem;
+  
+}
+.user-details .name{
+  font-size: 14px;
+  font-weight: 600;
+}
+.menu ul{
+  box-sizing: border-box;
+  padding: 0%;
+}
+.menu ul li{
+  list-style: none; /*Quita el boton de la li*/
+  position: relative;
+  /* margin-bottom: .2rem; */
+  /* background-color: red; */
+  /* box-sizing: border-box; */
+  /* height: 2rem; */
+  /* margin-bottom: 1rem; */
+  /* display: flex; */
+  /* align-items: center; */
+  /* padding-bottom: .5rem; */
+  /* padding: .5rem; */
+  /* padding: 0%; */
+  
+}
+
+.head .nav{
+  flex:1;
+}
+.menu ul li a:hover,
+.menu ul li.active a{
+  
+  /* padding: 10px 8px; */
+  /* background-color: #1a19196c; */
+  background-color: #96949421;
+  
+}
+/* .menu ul li .icon{
+  font-size: 20px;
+} */
+.menu ul li .text{
+  flex:1;
+}
+.menu ul li .arrow{
+  font-size: 14px;
+}
+
+.maquetacion .menu .sub-menu{
+  margin-left:0;
+  padding-left: 0;
+  padding-top: 0;
+  height: 0px;
+  overflow: hidden;
+  transition: all .5s ease;
+}
+
+/* https://chat.openai.com/share/95142a0f-90da-452d-8530-cf3ec0704dc2 */
+/*https://chat.openai.com/share/95142a0f-90da-452d-8530-cf3ec0704dc2*/
+
+.maquetacion .menu .sub-menu.unhidden{
+  margin-left:1.5rem;
+  padding-left: 1.5rem;
+  padding-top: .2rem;
+  border-left: 1px solid white;
+  height: auto;
+  transition: all .5s ease;
+}
+ .dos{
+  margin-left:0;
+  padding-left: 0;
+  padding-top: 0;
+  /* height: 0px; */
+  overflow: hidden;
+  transition: all .5s ease;
+}
+.variable{
+  border-radius: 1rem;
+  padding-left: 1rem;
+  height: 0;
+  
+}
+.variable > li:first-child{
+  /* background-color: red; */
+  /* border-radius: 100rem,; */
+  
+  /* border-left: .2rem solid whitesmoke; */
+}
+
+.submenu{
+  /* margin-left:1.5rem; */
+  
+  border-left: 1px solid white;
+  height: 0;
+  
+  /* height: auto; */
+  /* overflow:visible; */
+  /* transition: all 2s ease; */
+}
+
+.fixed{
+  position: absolute;
+  left: 4.5rem;
+  top:0;
+  background-color: #222222;
+  height:5rem;
+  width: 5rem;
+
+  /* transition: all .5s ease; */
+  /* background-color: red; */
+}
+
+
+
+/* .maquetacion.toggle .menu .sub-menu{
+  
+  visibility: visible;
+} */
+/* .maquetacion .menu .sub-menu.unhidden{
+  margin-left: 2rem;
+  justify-content: space-around;
+  border-left: white;
+  border-left: 1px solid white;
+ } */
+
+span{
+  height: 1rem;
+  width:20rem;
+  white-space: nowrap;
+}
+
+
+
+.menu ul li{
+  position: relative;
+}
+
+.menu .sub-menu li a{
+  padding: .64rem .5rem;
+  font-size: small;
+
+}
+.maquetacion.toggle .menu ul li .arrow{
+  display: none;
+}
+.menu ul li a{/*Esto añade un espaciado entre los elementos dentro del <a> y los alinea*/
+  display: flex;
+  align-items: center;
+  /* font-size: inherit; */
+  gap:.5rem;
+  font-size: .9rem;
+  padding: 1rem .5rem;
+  border-radius: 8px;
+  width: 100%;
+  color: white;
+  box-sizing: border-box;
+  transition: background-color .5s ease;
+  /* position: relative; */
+}
+.maquetacion.toggle aside .menu > ul > li > a{
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* border-color: red; */
+  /* border-radius: 5rem; */
+  /* background-color: aqua; */
+}
+/* No se mantenia en la misma posicion debido a que se manejaba en porcentajes por lo que el tamaño porcentual de cada pantalla le afectaria, lo cambie a 5 rem algo mas fijo */
+.maquetacion.toggle > aside .menu > ul > li > a .text{
+  position: absolute;
+  left: 4.3rem;
+  top:50%;
+  transform:translateY(-50%);
+  padding: 10px;
+  width: auto;
+  height: auto;
+  border-radius: 4px;
+  color: white;
+  background-color: black;
+  visibility: hidden;
+
+}
+.maquetacion.toggle aside .menu > ul > li >a:hover .text{
+  opacity: 1;
+  visibility: visible;
+  z-index: 1;
+}
+.maquetacion.toggle > aside  .menu > ul > li > a .text::after{
+  content: "";
+  position: absolute;
+  left: -.2rem;
+  transform:translateY(-50%);
+  transform: translateX(50%);
+  
+  width: 1rem;
+  height: 1rem;
+  border-radius: 2px;
+  background-color: black;
+  transform: rotate(45deg);
+  z-index: -1;
+}
+
+
+
+/* .menu .title{
+  font-size: 10px;
+  font-weight: 500;
+  color: blue;
+  text-transform: uppercase;
+    
+} */

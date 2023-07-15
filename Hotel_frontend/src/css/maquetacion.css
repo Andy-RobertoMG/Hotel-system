@@ -1,0 +1,68 @@
+:root {
+  --tamano-inicial: 20%;
+  --tamano-transformado: 8%;
+  --color: yellow;
+}
+
+.principal{
+  height: 100%;
+  background-color: rgba(255, 255, 255,.9);
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  display: flex;
+  /* align-items: center; */
+  justify-content: center;
+}
+.maquetacion{
+  position: relative;
+  display: grid;
+  box-sizing: border-box;
+  grid-template-columns: var(--tamano-inicial) auto;
+  grid-template-rows: 100vh;
+  /* transition: grid-template-columns 0.5s ease; */
+}
+/* .maquetacion.toggle{
+  display: grid;
+  grid-template-columns: var(--tamano-transformado) auto;
+  grid-template-rows: 100vh;
+} */
+body{
+  /* background-color: hsl(300, 100%, 25%); */
+}
+h3{
+  color: var(--color);
+}
+.pruebaCaja{
+  width: 100%;
+  align-self: center;
+  background-color: brown ;
+  height: 100%;
+}
+
+.buttons_in{
+  border-radius: 30px;
+  background-color: #D9D9D9;
+  padding-top: .5rem;
+  padding-bottom: .5rem;
+  width: 6.5rem;
+  text-align: center;
+  color:black;
+  font-weight:bold;
+}
+/* .div-transformable {
+  width: var(--tamaño-inicial);
+  height: var(--tamaño-inicial);
+  background-color: blue;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: width 0.3s, height 0.3s;
+}
+
+.div-transformable.transformado {
+  width: var(--tamaño-transformado);
+  height: var(--tamaño-transformado);
+} */

@@ -1,7 +1,15 @@
 import Header from "./Header";
 import Footer from "./Footer";
 import { Outlet } from "react-router-dom";
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
+import Sidebar from "./reutils/sidebar/sidebar";
+import Tabla from "./reutils/table/table";
+import {motion} from 'framer-motion'
+
+
+import DivTransformable from "./divtransformable";
+import { DropDown } from "./reutils/dropdowns/dropdown";
+// import { motion } from 'frame-motion';
 const Extraer = ()=>{
   const getList = async(event)=>{
     event.preventDefault();
@@ -20,13 +28,33 @@ const Extraer = ()=>{
     </>)
 }
 const Combinacion = ()=>{
+    const [collapse, setCollapse] = useState(false)
+    const modify_collapse= ()=>{
+      setCollapse(!collapse);
+    }
     return (
-      <>
-        <Header/>
-        <Outlet/>
-        {/* <Extraer/> */}
-        <Footer/>
-      </>  
+      
+      <div  >
+        <motion.div 
+          className={`maquetacion ${collapse?"toggle":""}`}
+          initial={false}
+          animate={{gridTemplateColumns:(!collapse)?"17rem auto":"6rem auto"}} 
+          
+          transition={{type:"spring",duration:.5}}
+        >
+          <Sidebar collapse={collapse} modify_collapse={modify_collapse}></Sidebar>
+          <div className="principal">
+              <Tabla/>
+              <DropDown check={{id:"23",id:"24"}} items={{213:{Nombre:"Andy asdas Roberto",Apellido:"Mesta"},1233:{Nombre:"Cristian",Apellido:"Gonzalez"}}}/>
+              {/* <DropDown check={{id:"23",id:"24"}}/> */}
+          </div>
+        </motion.div>
+        {/* <DivTransformable prueba={prueba_}></DivTransformable> */}
+        
+        {/* <Tabla></Tabla> */}
+        {/* <Outlet/> */}
+        
+      </div>
     )
 }
 
@@ -37,4 +65,4 @@ const Fechas=()=>{
     <h1>{Funciona}</h1>
   )
 }
-export default Combinacion;
+export {Combinacion};
