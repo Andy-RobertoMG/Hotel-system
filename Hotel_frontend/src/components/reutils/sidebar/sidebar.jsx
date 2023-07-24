@@ -11,7 +11,7 @@ import { FaBars } from 'react-icons/fa';
 import { v4 as uuidv4 } from 'uuid';
 import { delay } from "framer-motion";
 
-const SubMenuItem = ({collapse=null, text, subMenuItems=null,idActual=null,setIdActual=null}) => {
+const SubMenuItem = ({collapse=null,to=null, text, subMenuItems=null,idActual=null,setIdActual=null}) => {
   
   const [idActual_sub,setIdActual_sub] = useState("");
   const [showSubMenu, setShowSubMenu] = useState(false);
@@ -89,7 +89,8 @@ const SubMenuItem = ({collapse=null, text, subMenuItems=null,idActual=null,setId
     
   },[idActual])
 
-  const toggleSubMenu = () => {
+  const toggleSubMenu = (e) => {
+    e.preventDefault();
     if(id==idActual){
       setShowSubMenu(!showSubMenu);
     }else{
@@ -118,23 +119,6 @@ const SubMenuItem = ({collapse=null, text, subMenuItems=null,idActual=null,setId
       </a>
       {
         subMenuItems&& (
-          //   <motion.ul 
-          //     initial={"hidden"}
-          //     className={(!collapse)?'submenu':"variable"}
-          //     variants={(!collapse)?ulVariants:ulVariants_collapsed}
-          //     animate={showSubMenu ? "visible" : "hidden"}
-          //     transition={{duration: intermedio}}
-          //   >
-          //   {subMenuItems.map((item) => (
-          //     <li   key={item.id}>
-          //       <a href="#">
-          //         <span className="text">{item.data}</span>
-                  
-          //        </a>
-          //     </li>
-          //   ))}
-            
-          // </motion.ul>
           <motion.ul 
                 initial={collapse ? "hidden_c" : "hidden"}
   className={collapse ? 'variable' : 'submenu'}
@@ -148,10 +132,10 @@ const SubMenuItem = ({collapse=null, text, subMenuItems=null,idActual=null,setId
               >
           {subMenuItems.map((item) => (
               <li   key={item.id}>
-                <a href="#">
+                <Link value="texto" to={`${item.data}`}>
                   <span className="text">{item.data}</span>
                   
-                 </a>
+                 </Link>
               </li>
             ))}
             
@@ -209,7 +193,7 @@ const Sidebar = ({collapse,modify_collapse})=>{
               <SubMenuItem  text="Punto de Venta"  />
               <SubMenuItem  text="Verificación de Salidas"  />
               <SubMenuItem  text="Reportes"  />
-              <SubMenuItem  text="Clientes"  />
+              <SubMenuItem to={'client'} text="Clientes"  />
               <SubMenuItem  text="Reserva"  />
               <SubMenuItem {...{collapse,idActual,setIdActual}} text="Hola" subMenuItems={Menu}/>
               <SubMenuItem {...{collapse,idActual,setIdActual}} text="Hola" subMenuItems={Menu}/>

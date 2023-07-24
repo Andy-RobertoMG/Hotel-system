@@ -11,6 +11,9 @@ table{
   border-collapse: collapse;
   
 }
+.button{
+  width: 5rem;
+}
 .outler{
   display: flex;
   justify-content: center;
@@ -54,7 +57,7 @@ table tbody >tr > td{
   font-family: sans-serif;
   height: 2rem;
   padding: .5rem 1rem;
-  border-top:.08rem solid #515050;
+  border-top:1.9px solid rgba(81, 80, 80,.5);
   font-weight: bold;
   font-size: small;
   color: black;

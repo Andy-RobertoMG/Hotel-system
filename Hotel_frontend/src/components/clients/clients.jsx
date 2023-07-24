@@ -1,6 +1,9 @@
-const clients = ()=>{
-  return <div></div>
+import "../../css/clients.css"
+const Clients = ()=>{
+  return <div className="main">
+     <p>Clientes</p>
+  </div>
 }
 export {
-  clients
+  Clients
 }

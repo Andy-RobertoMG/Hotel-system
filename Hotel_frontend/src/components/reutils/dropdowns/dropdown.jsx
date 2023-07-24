@@ -49,6 +49,7 @@ const DropDown = ({items=null,check=null})=>{
     console.log(items_default)
   },[items_default])
   const seleccionando = (e) => {
+    e.preventDefault();
     let itemId = e.target.id;
     const isSelected = selectedItems[itemId];
     if (isSelected) {

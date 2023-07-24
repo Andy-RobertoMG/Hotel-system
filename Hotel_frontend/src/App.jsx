@@ -10,6 +10,7 @@ import { Reception } from './components/reception/reception'
 import { Rooms } from './components/rooms/rooms'
 import DivTransformable from './components/divtransformable'
 import './css/maquetacion.css'
+import { Clients } from './components/clients/clients'
 const Test = () => <h1 >Home</h1>
 function App() {
   const [count, setCount] = useState(0)
@@ -25,9 +26,9 @@ function App() {
           <Route path='dashboard' >
 
           </Route>
-          <Route path='reception' element={<Reception/>}>
+          <Route path='client' element={<Clients/>}></Route>
           <Route path='rooms' element={<Rooms/>}>
-
+          <Route path='reception' element={<Reception/>}>
           </Route>
           </Route>
         </Route>

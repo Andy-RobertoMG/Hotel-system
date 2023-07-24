@@ -34,27 +34,23 @@ const Combinacion = ()=>{
     }
     return (
       
-      <div  >
         <motion.div 
           className={`maquetacion ${collapse?"toggle":""}`}
           initial={false}
           animate={{gridTemplateColumns:(!collapse)?"17rem auto":"6rem auto"}} 
           
           transition={{type:"spring",duration:.5}}
-        >
+          >
           <Sidebar collapse={collapse} modify_collapse={modify_collapse}></Sidebar>
-          <div className="principal">
+          {/* <div className="principal">
               <Tabla/>
-              <DropDown check={{id:"23",id:"24"}} items={{213:{Nombre:"Andy asdas Roberto",Apellido:"Mesta"},1233:{Nombre:"Cristian",Apellido:"Gonzalez"}}}/>
-              {/* <DropDown check={{id:"23",id:"24"}}/> */}
-          </div>
+              <DropDown check={{id:"23",id:"24"}} items={{213:{Nombre:"Andy asdas Roberto",Apellido:"Mesta"},1233:{Nombre:"Cristian",Apellido:"Gonzalez"}}}/> */}
+            <Outlet/>
+          {/* </div> */}
+
         </motion.div>
-        {/* <DivTransformable prueba={prueba_}></DivTransformable> */}
         
-        {/* <Tabla></Tabla> */}
-        {/* <Outlet/> */}
         
-      </div>
     )
 }
 

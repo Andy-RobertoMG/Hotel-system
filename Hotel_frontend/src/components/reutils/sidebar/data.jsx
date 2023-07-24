@@ -1,10 +1,10 @@
 const Menu =[
   {
-    data:"Andy",
+    data:"rooms",
     id:1
   },
   {
-    data:"Damian",
+    data:"Datos",
     id:2
   },
   {
