@@ -1,19 +1,21 @@
 import { useId } from "react"
 import "../../../css/input_container.css"
 import { useState,useEffect } from "react";
-const Table_input = ({datos_send=null,setMostrar,handle_submit=null,handle_update=null,data,id_data})=>{
+import { DropDown } from "../dropdowns/dropdown";
+import { DropDown_SO } from "../dropdowns/dropdown_Single";
+const Table_input = ({datos_send=null,setMostrar,handle_submit=null,handle_update=null,data})=>{
   const id = useId();
   useEffect(()=>{
-    console.log(datos_send)
-    console.log(data)
-    console.log(datos_send)
-  },[datos_send])
+    if(data){
+      
+    }
+  },[data])
   return <>
       <div className="cuerpo_input">
         <div className="cartel">
           <p>Habitacion</p>
         </div>
-        <form id={id_data} onSubmit={handle_submit}>
+        <form id={datos_send.id} onSubmit={handle_submit}>
           <div className="text_in">
             {
               data&&data.map(
@@ -22,10 +24,11 @@ const Table_input = ({datos_send=null,setMostrar,handle_submit=null,handle_updat
                       <div className="input-container" key={dato.id+"-"+id}>
                         <label  htmlFor={dato.id+"-"+id}>{dato.title}</label>
                         {
-                          datos_send?
-                          <input onChange={handle_update} type={dato.type}  className="input" id={dato.id+"-"+id} name={dato.name} value={datos_send[dato.name]} placeholder={dato.placeholder}/>
-                          :
-                          <input onChange={handle_update} type={dato.type}  className="input" id={dato.id+"-"+id} name={dato.name} placeholder={dato.placeholder}/>
+                          (dato.type!="select")&&
+                          <input onChange={handle_update} type={dato.type}   className="input" id={dato.id+"-"+id} name={dato.name} value={datos_send[dato.name]} placeholder={dato.placeholder}/>
+                        }
+                        {
+                          (dato.type=="select")&&<DropDown_SO dato_choosen={datos_send[dato.name]} name={dato.name} handle_update={handle_update} items={dato.value}/>
                         }
                       </div>
                       
@@ -34,7 +37,7 @@ const Table_input = ({datos_send=null,setMostrar,handle_submit=null,handle_updat
             }
           </div>
           <div className="adjust_submit">
-            <input className="button_send" type="submit" value={"Enviar"}/>
+            <input  /*onClick={()=>setMostrar(false)} */ className="button_send" type="submit" value={"Enviar"}/>
             <input onClick={()=>setMostrar(false)} className="button_cancel" type="button" value={"Cancelar"}/>
           </div>
         </form>

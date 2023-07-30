@@ -4,6 +4,7 @@ import  '../../../css/table_responsive.css';
 import { Table_input } from "../table_input/table_input";
 import { useState } from "react";
 import { useEffect } from "react";
+import Eliminate from './../eliminate';
 const requestOptionsget={
   method:"GET",
   headers:{
@@ -31,17 +32,19 @@ const requestOptionsPost={
 
 
 
-const Tabla = ({datos,show,reference,params=null,getAll=null})=>{
+const Tabla = ({inicialization,datos,show,reference,params=null,getAll=null})=>{
   const [mostar_ti, setmostrar] = useState(false);
   const [temporal,setTemporal]= useState({});
   const [datos_send,setDatos] = useState({});
   const [mostrar_edit,setMostrar_edit] = useState(false);
   const [information,setInformation] = useState([]);
-  const [id_set,setId] = useState(null);
   const handle_update= (e)=>{
     const {name,value} = e.target;
     setDatos({...datos_send,[name]:value});
   } 
+  useEffect(()=>{
+    console.log(datos_send)
+  },[datos_send])
   const getTableHeaders = () => {
     if(show){
       const filtered =show.filter(({show})=>{
@@ -52,6 +55,7 @@ const Tabla = ({datos,show,reference,params=null,getAll=null})=>{
     return [];
   };
   const FindById =async(id)=>{
+    console.log(id)
     const url = reference+ `/${id}`;
     let extraction = await fetch(url,requestOptionsget)
     .then((response)=>{
@@ -59,27 +63,25 @@ const Tabla = ({datos,show,reference,params=null,getAll=null})=>{
     });
     return extraction;
   }
+  useEffect(()=>{
+    console.log("Temporal")
+    console.log(temporal)
+  },[])
+  useEffect(()=>{
+    if(!mostar_ti&&!mostrar_edit){
+      setDatos(inicialization);
+    }
+  },[mostar_ti,mostrar_edit])
   const Edit = async (e)=>{
     let id = e.target.id;
-    setId(id);
     let extracted = await FindById(id);
     setMostrar_edit(true);
-    // const datos_ = datos.map((inf)=>{
-    //     const {name} = inf;
-    //     return {...inf,["value"]:extracted[name]};
-    // })
-    // setDatos(datos_);
-    console.log(datos_send)
-    console.log(extracted)
-    console.log(datos)
     setDatos(extracted);
-    setTemporal(datos);
   }
   const Delete = async (e)=>{
     e.preventDefault()
     let url = reference+`/${e.target.id}`;
     let resultado = await fetch(url,{...requestOptionsDelete})
-    // let extracted = await FindById(id);
   }
   useEffect(()=>{
     if(mostar_ti){
@@ -89,22 +91,31 @@ const Tabla = ({datos,show,reference,params=null,getAll=null})=>{
   const Create = async(e)=>{
     e.preventDefault();
     
-    let resultado = await fetch(reference,{...requestOptionsPost,body:JSON.stringify(datos_send)});
+    let resultado = await fetch(reference,{...requestOptionsPost,body:JSON.stringify(datos_send)}).then(response=>response.json());
+    console.log(resultado)
+    console.log(resultado.body)
+    console.log(resultado.errors)
+    console.log(resultado.body.errors)
+    setDatos(inicialization);
+    
     setmostrar(false);
   }
   const Edition = async(e)=>{
     e.preventDefault();
+    console.log(e.target)
     let url = reference+`/${e.target.id}`;
     console.log(url);
     console.log(requestOptionsPut)
     let resultado = await fetch(url,{...requestOptionsPut,body:JSON.stringify(datos_send)});
+    setDatos(inicialization);
     setMostrar_edit(false)
   }
-  useEffect(()=>{
-    
+  useEffect( ()=>{
     const funcion = async()=>{
       if(reference){
+        setDatos(inicialization)
         try{
+          console.log(reference)
           const resultado = await fetch(reference,requestOptionsget).then(
           response =>{
             if(!response.ok)
@@ -113,25 +124,44 @@ const Tabla = ({datos,show,reference,params=null,getAll=null})=>{
             }
           )
           setInformation(resultado)
+          console.log(resultado);
         }catch(error){
           console.log(error);
         }
-        
       }
     }
     funcion();
-    setTemporal(datos);
+    const actualizar_datos = async()=>{
+    const actualizacion =  await Promise.all(
+    datos.map(async (general) => {
+          if (general.type === "select") {
+            console.log(general.select)
+            let extraction_data = await fetch(general.select, requestOptionsget).then(response => response.json());
+            // console.log(extraction_data);
+            
+            let resultado = extraction_data.map((info) => {
+                return {id:info.id,title:info.title};
+            });
+            general.value = resultado;
+            return general;
+          } else {
+            return general;
+          }
+        }
+      )
+    );
+    setTemporal(actualizacion);
+    }
+    actualizar_datos();
+    // console.log(temporal)
   },[])
   return (
     <>
     {
-      mostar_ti&&<Table_input setMostrar={setmostrar} handle_submit={Create} handle_update={handle_update} data={temporal} id_data={1} />
+      mostar_ti&&<Table_input  datos_send={datos_send} setMostrar={setmostrar} handle_submit={Create} handle_update={handle_update} data={temporal}/>
     }
     {
-      mostrar_edit&&<Table_input setMostrar={setMostrar_edit} handle_submit={Edition} handle_update={handle_update} datos_send={datos_send} data={temporal} id_data={id_set} />
-    }
-    {
-
+      mostrar_edit&&<Table_input setMostrar={setMostrar_edit} handle_submit={Edition} handle_update={handle_update} datos_send={datos_send} data={temporal} />
     }
     <div className="outler">
     <div type="button">
@@ -156,12 +186,19 @@ const Tabla = ({datos,show,reference,params=null,getAll=null})=>{
                 information&&information.map((item)=>(
                     <tr key={item.id}>
                       {
-                        getTableHeaders().map((child)=>(
-                          <td key={child.id}>{item[child.name]}</td>
-                        ))
+                        getTableHeaders().map((child)=>{
+                          // console.log(child)
+                          // return <td>2</td>
+                          console.log(child)
+                          console.log(item)
+                          if(child?.key_foreign){
+                            return <td key={child.id} id={item[child.name].id}>{item[child.name].title}</td>
+                          }
+                          return <td key={child.id}>{item[child.name]}</td>
+                        })
                       }
                       <td id={item.id} onClick={Edit} >Editar</td>
-                      <td>Eliminar</td>
+                      <td id={item.id} onClick={Delete}>Eliminar</td>
                     </tr>
                 ))
               }

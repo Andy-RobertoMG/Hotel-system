@@ -5,34 +5,34 @@ import { useState,useRef,useMemo } from 'react';
 import { AnimatePresence } from "framer-motion";
 import { useEffect } from "react";
 import {BiRadioCircle} from 'react-icons/bi'
-
-const DropDown = ({items=[],check=null})=>{
+/**
+ * Este dropdown es para solo escoger un elemento
+ */
+const DropDown_SO = ({dato_choosen=null,name='',handle_update=null,items=[],check=null})=>{
   /**
-   * Tiene guardado una lista de los objetos seleccionados
+   * Prop
    */
   const [items_selected,setItems_Selected] = useState([]);
-  /**
-   * Guarda verdadero o falso en los estados de las id para saber cuales objetos han sido seleccionados y cambiarlos cuando el usuario cierra el dropdown
-   */
   const [items_state,setItems_State] = useState({});
-  /**
-   * Tiene una lista de objetos no seleccionados
-   */
   const [items_Not_Selected, setNotSelected] = useState([])
-  /**
-   * 
-   */
   const [showAnimation, setShowAnimation] = useState(false);
   useEffect(()=>{
     if(items.length>0){
       setNotSelected(items);
-      let aux = {}
-      items.forEach(data =>{
-        aux = {...aux,[data.id]:false};
-      })
-      setItems_State(aux);
+      setItems_State({[dato_choosen]:true});
+      console.log(dato_choosen)
+      // if()
+      // const {id} = dato_choosen;
+      // setItems_State({id:true})
+      
     } 
   },[])
+  useEffect(()=>{
+    if(items_state){
+      const objeto = {target:{name:name,value:Object.keys(items_state)[0]}};
+      handle_update(objeto);
+    }
+  },[items_state])
   const items_NotSelected_Sort = useMemo(()=>{
     const sortedArray = items_Not_Selected.sort((a,b)=>{
       return a.title.localeCompare(b.title);
@@ -49,7 +49,7 @@ const DropDown = ({items=[],check=null})=>{
   },[items_Not_Selected])
   const arrow_button = ()=>{
     console.log(items_state)
-    if(showAnimation){
+    if(showAnimation||!showAnimation){
       let aux_Selected=[];
       let aux_NotSelected=[];
       items.forEach(item=>{
@@ -74,12 +74,9 @@ const DropDown = ({items=[],check=null})=>{
     console.log(items_Not_Selected);
   },[items_state])
   const OnSelect = (e)=>{
-    if(!items_state[e.target.id])
+    if(e.target.id)
     {
-      setItems_State({...items_state,[e.target.id]:true})
-    }
-    else{
-      setItems_State({...items_state,[e.target.id]:false})
+      setItems_State({[e.target.id]:true})
     }
   }
   return <>
@@ -134,5 +131,5 @@ const DropDown = ({items=[],check=null})=>{
   </>
 }
 export{
-  DropDown
+  DropDown_SO
 }

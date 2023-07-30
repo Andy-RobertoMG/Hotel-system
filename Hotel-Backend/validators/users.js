@@ -10,7 +10,7 @@ const validateRegister = [
   ,(req,res,next)=>{
     // console.log("5 5 5")
     const {password} = req.body;
-    console.log("validateRegister:"+JSON.stringify(req.body)+'\n')
+    // console.log("validateRegister:"+JSON.stringify(req.body)+'\n')
     check('repeat_pw').equals(password).withMessage("Las contraseñas no coinciden")(req, res, next);/**Ua que la funcion esta recibiendo req,res,el check no recibira estos parametros por lo que debes asignarselos */
   }
 
@@ -22,4 +22,16 @@ const validateRegister = [
   ,validateResult
 
 ]
-export {validateRegister};
+const validateTypeRoom = [
+  check('desc').exists().notEmpty().withMessage("No se ha escrito en la descipción"),
+  check('price').exists().notEmpty().not().isNumeric().withMessage("El valor escrito no es numerico")
+  ,validateResult
+]
+const validateRoom = [
+  check('id').exists().notEmpty().withMessage("El titulo enviado esta vacio").isNumeric().withMessage("El valor no es numerico"),
+  check('floor').exists().notEmpty().withMessage("No se ha escrito el piso").isNumeric().withMessage("El valor ingresado en el piso no es numerico"),
+  check('roomtype_id').exists().notEmpty().withMessage("No se ha seleccionado un tipo de habitacion")
+  ,validateResult
+]
+
+export {validateRoom,validateRegister,validateTypeRoom};

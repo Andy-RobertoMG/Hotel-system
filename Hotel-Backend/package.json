@@ -10,19 +10,17 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^5.1.0",
-    "cors": "^2.8.5",
-    "csurf": "^1.11.0",
-    "dotenv": "^16.3.1",
-    "express": "^4.18.1",
-    "express-validator": "^7.0.1",
-    "mysql2": "^3.4.2",
-    "pg": "^8.10.0",
-    "pg-hstore": "^2.3.4",
-    "pg2": "^0.0.1",
-    "reload": "^3.2.0",
-    "sequelize": "^6.30.0",
-    "url": "^0.11.0"
+    "bcrypt": "5.1.0",
+    "cors": "2.8.5",
+    "csurf": "1.11.0",
+    "dotenv": "16.3.1",
+    "express": "4.18.1",
+    "express-validator": "7.0.1",
+    "mysql2": "3.4.2",
+    "reload": "3.2.0",
+    "sequelize": "6.30.0",
+    "url": "0.11.0",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.19"

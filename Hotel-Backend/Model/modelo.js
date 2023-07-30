@@ -1,6 +1,8 @@
 import sequelize from '../bd/base_de_datos.js';
 import { Router } from 'express';
+import { v4 as uuidv4 } from 'uuid';
 import { DataTypes } from 'sequelize';
+import bcrypt from 'bcrypt'
 const router = Router();
 //import {getUsers} from '../Controller/controlador.js'
 //import sequelize from './../bd/base_de_datos';
@@ -26,10 +28,10 @@ const Rol = sequelize.define('Rol',{
 )
 const Users = sequelize.define('Users', {
   id: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.UUID,
     primaryKey: true,
-    autoIncrement: true,
-    allowNull: false,
+    allowNull:false,
+    defaultValue: () => uuidv4(), // Asigna un UUID aleatorio por defecto
   },
   user_name: {
     type: DataTypes.STRING(50),
@@ -42,7 +44,7 @@ const Users = sequelize.define('Users', {
   },
   number_phone: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
   },
   email: {
     type: DataTypes.STRING(100),
@@ -67,7 +69,14 @@ const Users = sequelize.define('Users', {
 }, {
   tableName: 'Users',
   timestamps: false,
-});
+  hooks:{
+    beforeCreate: async (usuario)=>{
+      const salt = await bcrypt.genSalt(10);
+      usuario.pass = await bcrypt.hash(usuario.pass,salt);
+    }
+  }
+},
+);
 const Permission = sequelize.define('Permission', {
   per_id: {
     type: DataTypes.INTEGER,
@@ -87,6 +96,75 @@ const Permission = sequelize.define('Permission', {
   tableName: 'Permission',
   timestamps: false,
 });
+const Roomtype = sequelize.define("Roomtype",
+  {
+    id: {
+      type: DataTypes.UUID,
+      primaryKey: true,
+      allowNull:false,
+      defaultValue: () => uuidv4(), // Asigna un UUID aleatorio por defecto
+    },
+    title: {
+      type: DataTypes.STRING(50),
+      allowNull: false,
+      field: 'title', // Si el nombre de la columna es diferente al nombre del atributo
+      comment: 'Titulo',
+    },
+    descr: {
+      type: DataTypes.STRING(150),
+      allowNull: false,
+      field: 'descr', // Si el nombre de la columna es diferente al nombre del atributo
+      comment: 'Description',
+    },
+    price: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+    },
+  },
+  {
+    sequelize,
+    modelName: 'Roomtype',
+    tableName: 'Roomtype', // Nombre de la tabla en la base de datos
+    timestamps: false, // Si no necesitas campos de fecha "createdAt" y "updatedAt"
+  }
+);
+const Room = sequelize.define("Room",
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      allowNull: false,
+      // defaultValue: () => uuidv4(), // Asigna un UUID aleatorio por defecto
+    },
+        
+    floor: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    roomtype_id: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      references:{
+        model:Roomtype,
+        key:'id'
+      }
+    },
+  },
+  {
+    sequelize,
+    modelName: 'Room',
+    tableName: 'Room', // Nombre de la tabla en la base de datos
+    timestamps: false, // Si no necesitas campos de fecha "createdAt" y "updatedAt"
+  }  
+)
+// Establecer la relación de clave foránea entre Room y Roomtype
+Room.belongsTo(Roomtype, { foreignKey: 'roomtype_id', targetKey: 'id' });
+Roomtype.hasMany(Room, { foreignKey: 'roomtype_id', sourceKey: 'id' });
+// Roomtype.hasMany(Room,{foreignKey:''})
 // Users.belongsTo(Permission, { foreignKey: 'per_id' });
-Users.hasOne(Permission,{foreignKey:'per_id'})
-export default {Rol,Users,Permission};
+Users.prototype.verificarPassword = function(password){
+  return bcrypt.compareSync(password,this.pass);
+}
+Permission.hasMany(Users,{foreignKey:'per_id'});
+Users.hasOne(Permission,{foreignKey:'per_id'});
+export {Roomtype,Room,Rol,Users,Permission};

@@ -10,9 +10,9 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
 
 try{
-  await sequelize.sync({force:true});
+  await sequelize.sync({force:false});
   
-  console.log("Coneccion establesida");
+  // console.log("Coneccion establesida");
 
 }catch(error){
   console.log("Error",error);
