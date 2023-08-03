@@ -58,7 +58,7 @@
   padding: .5rem;
   border-radius: .5rem;
   list-style: none;
-  overflow: hidden;
+  overflow-y: scroll;
   box-sizing: border-box;
 }
 .dropdown_li:hover{
@@ -118,11 +118,13 @@
   display: flex;
   align-items: center;
   position: relative;
+  
 }
 
 .dropdown_li{
   position: relative;
   padding-left: .2rem;
+  /* overflow-y: scroll; */
   width: 100%;
   text-decoration: none;
   outline: none;
@@ -132,8 +134,8 @@
   
 }
 .dropdown_li{
-  overflow: hidden;
-  box-sizing: border-box;
+  /* overflow: hidden; */
+  /* box-sizing: border-box; */
 }
 /* .dropdown_li::after{
   position: absolute;

@@ -4,18 +4,25 @@ import { useState,useEffect } from "react";
 import { DropDown } from "../dropdowns/dropdown";
 import { DropDown_SO } from "../dropdowns/dropdown_Single";
 const Table_input = ({datos_send=null,setMostrar,handle_submit=null,handle_update=null,data})=>{
+  const [id_edit,setId] = useState(null);
   const id = useId();
   useEffect(()=>{
     if(data){
-      
+      console.log(id_edit)
+      console.log(data)
+      console.log(datos_send)
     }
-  },[data])
+  },[data,datos_send])
+  useEffect(()=>{
+    setId(datos_send.id);
+  },[])
+  console.log("hola");
   return <>
       <div className="cuerpo_input">
         <div className="cartel">
           <p>Habitacion</p>
         </div>
-        <form id={datos_send.id} onSubmit={handle_submit}>
+        <form data-form-id={id_edit} onSubmit={handle_submit}>
           <div className="text_in">
             {
               data&&data.map(

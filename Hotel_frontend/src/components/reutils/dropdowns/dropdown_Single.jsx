@@ -16,9 +16,14 @@ const DropDown_SO = ({dato_choosen=null,name='',handle_update=null,items=[],chec
   const [items_state,setItems_State] = useState({});
   const [items_Not_Selected, setNotSelected] = useState([])
   const [showAnimation, setShowAnimation] = useState(false);
+  
+  useEffect(()=>{
+    console.log(dato_choosen,items);
+  },[dato_choosen,items])
   useEffect(()=>{
     if(items.length>0){
       setNotSelected(items);
+      console.log(items)
       setItems_State({[dato_choosen]:true});
       console.log(dato_choosen)
       // if()
@@ -27,9 +32,11 @@ const DropDown_SO = ({dato_choosen=null,name='',handle_update=null,items=[],chec
       
     } 
   },[])
+
   useEffect(()=>{
     if(items_state){
       const objeto = {target:{name:name,value:Object.keys(items_state)[0]}};
+      console.log(objeto)
       handle_update(objeto);
     }
   },[items_state])
@@ -74,9 +81,11 @@ const DropDown_SO = ({dato_choosen=null,name='',handle_update=null,items=[],chec
     console.log(items_Not_Selected);
   },[items_state])
   const OnSelect = (e)=>{
+    console.log(e.target)
     if(e.target.id)
     {
       setItems_State({[e.target.id]:true})
+      console.log(items_state)
     }
   }
   return <>

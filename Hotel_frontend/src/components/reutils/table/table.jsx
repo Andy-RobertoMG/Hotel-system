@@ -38,9 +38,24 @@ const Tabla = ({inicialization,datos,show,reference,params=null,getAll=null})=>{
   const [datos_send,setDatos] = useState({});
   const [mostrar_edit,setMostrar_edit] = useState(false);
   const [information,setInformation] = useState([]);
+  const [id_search,setId] = useState(null);
   const handle_update= (e)=>{
     const {name,value} = e.target;
-    setDatos({...datos_send,[name]:value});
+    console.log(e.target);
+    console.log(value)
+    // Verifica si el valor es numérico utilizando la función isNaN (is Not a Number)
+  // Si no es un número válido, no realiza la conversión y simplemente actualiza el estado
+  if (!isNaN(value)) {
+    // Convierte el valor a número usando parseFloat para números decimales
+    // o parseInt para números enteros
+    const parsedValue = parseFloat(value); // o parseInt(value) para enteros
+
+    // Actualiza el estado con el valor convertido
+    setDatos({ ...datos_send, [name]: parsedValue });
+  } else {
+    // Si no es un número válido, simplemente actualiza el estado con el valor actual
+    setDatos({ ...datos_send, [name]: value });
+  }
   } 
   useEffect(()=>{
     console.log(datos_send)
@@ -64,46 +79,55 @@ const Tabla = ({inicialization,datos,show,reference,params=null,getAll=null})=>{
     return extraction;
   }
   useEffect(()=>{
-    console.log("Temporal")
-    console.log(temporal)
-  },[])
-  useEffect(()=>{
     if(!mostar_ti&&!mostrar_edit){
       setDatos(inicialization);
     }
   },[mostar_ti,mostrar_edit])
   const Edit = async (e)=>{
     let id = e.target.id;
-    let extracted = await FindById(id);
+    console.log(e.target.id)
+    let extracted = await FindById(id);//Hay un problema donde si no recibe los datos buscados se guardara el error, hay que implementar try
+    console.log(extracted)
     setMostrar_edit(true);
+    setId(id);
     setDatos(extracted);
   }
   const Delete = async (e)=>{
     e.preventDefault()
+    console.log(e.target.id)
     let url = reference+`/${e.target.id}`;
     let resultado = await fetch(url,{...requestOptionsDelete})
   }
-  useEffect(()=>{
-    if(mostar_ti){
-      console.log(datos_send)
-    }
-  },[mostar_ti])
   const Create = async(e)=>{
     e.preventDefault();
+    let objeto = datos_send;
+    if(!objeto.id){
+      delete objeto.id;
+    }
+    try{
+      let resultado = await fetch(reference,{...requestOptionsPost,body:JSON.stringify(objeto)})
+      .then(response=>{
+      console.log(response)
+      return response.json()
+    });
+    console.log(resultado)
+    }catch(e){
+      console.log(e);
+    }
     
-    let resultado = await fetch(reference,{...requestOptionsPost,body:JSON.stringify(datos_send)}).then(response=>response.json());
     console.log(resultado)
     console.log(resultado.body)
     console.log(resultado.errors)
-    console.log(resultado.body.errors)
+    // console.log(resultado.body.errors)
     setDatos(inicialization);
     
     setmostrar(false);
   }
   const Edition = async(e)=>{
     e.preventDefault();
-    console.log(e.target)
-    let url = reference+`/${e.target.id}`;
+    console.log(id_search)
+    let url = reference+`/${id_search}`;
+    console.log(datos_send)
     console.log(url);
     console.log(requestOptionsPut)
     let resultado = await fetch(url,{...requestOptionsPut,body:JSON.stringify(datos_send)});
@@ -191,11 +215,14 @@ const Tabla = ({inicialization,datos,show,reference,params=null,getAll=null})=>{
                           // return <td>2</td>
                           console.log(child)
                           console.log(item)
-                          if(child?.key_foreign){
-                            return <td key={child.id} id={item[child.name].id}>{item[child.name].title}</td>
-                          }
+                          // if(child?.key_foreign){
+                          //   return <td key={child.id} id={item[child.name].id}>{item[child.name].title}</td>
+                          // }
                           return <td key={child.id}>{item[child.name]}</td>
                         })
+                      }
+                      {
+                        console.log(item)
                       }
                       <td id={item.id} onClick={Edit} >Editar</td>
                       <td id={item.id} onClick={Delete}>Eliminar</td>
