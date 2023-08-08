@@ -12,10 +12,9 @@ const Rooms = ()=>{
       </p>
     </div> 
     
-    <Tabla datos={rooms_input} inicialization={inicialization_R} show={Room_show} reference={"http://192.168.56.1:8080/rooms"}>
+    <Tabla datos={rooms_input} inicialization={inicialization_R} show={Room_show}  reference={"http://192.168.56.1:8080/rooms"}>
     </Tabla>
-    <Tabla datos={typeRoom_input} inicialization={inicialization_TR}show={TypeRoom_show}getAll={"http://192.168.56.1:8080/typeroom"} reference={"http://192.168.56.1:8080/typeroom"}>
-
+    <Tabla datos={typeRoom_input} inicialization={inicialization_TR} show={TypeRoom_show}  getAll={"http://192.168.56.1:8080/typeroom"} reference={"http://192.168.56.1:8080/typeroom"}>
     </Tabla>
   </div>
 }

@@ -30,15 +30,23 @@ const requestOptionsPost={
   },
 }
 
+const getCsrfToken = () => {
+  const csrfCookie = document.cookie.split(';')
+    .find(cookie => cookie.trim().startsWith('XSRF-TOKEN='));
+  if (csrfCookie) {
+    return csrfCookie.split('=')[1];
+  }
+  return null;
+};
 
-
-const Tabla = ({inicialization,datos,show,reference,params=null,getAll=null})=>{
+const Tabla = ({inicialization,edit,datos,show,reference,params=null,getAll=null})=>{
   const [mostar_ti, setmostrar] = useState(false);
   const [temporal,setTemporal]= useState({});
   const [datos_send,setDatos] = useState({});
   const [mostrar_edit,setMostrar_edit] = useState(false);
   const [information,setInformation] = useState([]);
   const [id_search,setId] = useState(null);
+  
   const handle_update= (e)=>{
     const {name,value} = e.target;
     console.log(e.target);
@@ -47,9 +55,11 @@ const Tabla = ({inicialization,datos,show,reference,params=null,getAll=null})=>{
   // Si no es un número válido, no realiza la conversión y simplemente actualiza el estado
   if (!isNaN(value)) {
     // Convierte el valor a número usando parseFloat para números decimales
-    // o parseInt para números enteros
-    const parsedValue = parseFloat(value); // o parseInt(value) para enteros
-
+    // o parseInt para números 
+    let parsedValue =value;
+    if(value!=""){
+      parsedValue=  parseFloat(value); // o parseInt(value) para enteros
+    }
     // Actualiza el estado con el valor convertido
     setDatos({ ...datos_send, [name]: parsedValue });
   } else {
@@ -58,8 +68,21 @@ const Tabla = ({inicialization,datos,show,reference,params=null,getAll=null})=>{
   }
   } 
   useEffect(()=>{
+    console.log("Todos")
     console.log(datos_send)
-  },[datos_send])
+    console.log(inicialization)
+    console.log("datos")
+    console.log(datos)
+    console.log("Show")
+    console.log(show)
+    console.log(reference)
+
+  },[])
+  useEffect(()=>{
+    if(!mostar_ti||!mostrar_edit){
+      SearchAll();
+    }
+  },[mostar_ti,mostrar_edit])
   const getTableHeaders = () => {
     if(show){
       const filtered =show.filter(({show})=>{
@@ -85,18 +108,20 @@ const Tabla = ({inicialization,datos,show,reference,params=null,getAll=null})=>{
   },[mostar_ti,mostrar_edit])
   const Edit = async (e)=>{
     let id = e.target.id;
-    console.log(e.target.id)
+    // console.log(e.target.id)
     let extracted = await FindById(id);//Hay un problema donde si no recibe los datos buscados se guardara el error, hay que implementar try
-    console.log(extracted)
+    // console.log(extracted)
     setMostrar_edit(true);
     setId(id);
     setDatos(extracted);
   }
   const Delete = async (e)=>{
     e.preventDefault()
-    console.log(e.target.id)
+    const csrf = getCsrfToken();
+    // console.log(csrf);
+    // console.log(e.target.id)
     let url = reference+`/${e.target.id}`;
-    let resultado = await fetch(url,{...requestOptionsDelete})
+    let resultado = await fetch(url,{...requestOptionsDelete});
   }
   const Create = async(e)=>{
     e.preventDefault();
@@ -106,21 +131,19 @@ const Tabla = ({inicialization,datos,show,reference,params=null,getAll=null})=>{
     }
     try{
       let resultado = await fetch(reference,{...requestOptionsPost,body:JSON.stringify(objeto)})
-      .then(response=>{
-      console.log(response)
-      return response.json()
-    });
-    console.log(resultado)
+        .then(response=>{
+        console.log(response)
+        return response.json()
+      });
+    // console.log(resultado)
     }catch(e){
       console.log(e);
     }
-    
-    console.log(resultado)
-    console.log(resultado.body)
-    console.log(resultado.errors)
+    // console.log(resultado)
+    // console.log(resultado.body)
+    // console.log(resultado.errors)
     // console.log(resultado.body.errors)
     setDatos(inicialization);
-    
     setmostrar(false);
   }
   const Edition = async(e)=>{
@@ -134,21 +157,22 @@ const Tabla = ({inicialization,datos,show,reference,params=null,getAll=null})=>{
     setDatos(inicialization);
     setMostrar_edit(false)
   }
+  const SearchAll = async ()=>{
+    const resultado = await fetch(reference,requestOptionsget).then(
+      response => {
+          if(!response?.ok)
+            throw new Error("Error al extraer los datos")
+          return response.json();
+        }
+      )
+    setInformation(resultado);
+  }
   useEffect( ()=>{
     const funcion = async()=>{
       if(reference){
         setDatos(inicialization)
         try{
-          console.log(reference)
-          const resultado = await fetch(reference,requestOptionsget).then(
-          response =>{
-            if(!response.ok)
-              throw new Error('Error al extraer los datos');
-            return response.json();
-            }
-          )
-          setInformation(resultado)
-          console.log(resultado);
+          SearchAll();
         }catch(error){
           console.log(error);
         }
@@ -159,10 +183,9 @@ const Tabla = ({inicialization,datos,show,reference,params=null,getAll=null})=>{
     const actualizacion =  await Promise.all(
     datos.map(async (general) => {
           if (general.type === "select") {
-            console.log(general.select)
+            // console.log(general.select)
             let extraction_data = await fetch(general.select, requestOptionsget).then(response => response.json());
             // console.log(extraction_data);
-            
             let resultado = extraction_data.map((info) => {
                 return {id:info.id,title:info.title};
             });
@@ -185,7 +208,7 @@ const Tabla = ({inicialization,datos,show,reference,params=null,getAll=null})=>{
       mostar_ti&&<Table_input  datos_send={datos_send} setMostrar={setmostrar} handle_submit={Create} handle_update={handle_update} data={temporal}/>
     }
     {
-      mostrar_edit&&<Table_input setMostrar={setMostrar_edit} handle_submit={Edition} handle_update={handle_update} datos_send={datos_send} data={temporal} />
+      mostrar_edit&&<Table_input edit={true} setMostrar={setMostrar_edit} handle_submit={Edition} handle_update={handle_update} datos_send={datos_send} data={temporal} />
     }
     <div className="outler">
     <div type="button">
@@ -203,7 +226,6 @@ const Tabla = ({inicialization,datos,show,reference,params=null,getAll=null})=>{
               <th>Editar</th>
               <th>Eliminar</th>
             </tr>
-            
           </thead>
           <tbody>
               {
@@ -211,8 +233,6 @@ const Tabla = ({inicialization,datos,show,reference,params=null,getAll=null})=>{
                     <tr key={item.id}>
                       {
                         getTableHeaders().map((child)=>{
-                          // console.log(child)
-                          // return <td>2</td>
                           console.log(child)
                           console.log(item)
                           // if(child?.key_foreign){

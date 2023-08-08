@@ -1,18 +1,29 @@
 const rooms_input
 = [
-  {id:0,name:"id",value:[],title:"Habitación",placeholder:"Ingrese el numero de la habitación",type:"number",show:true},
+  {id:0,name:"id",value:[],edit:true,title:"Habitación",placeholder:"Ingrese el numero de la habitación",type:"number",show:true},
   {id:1,name:"floor",value:[],title:"Piso",placeholder:"Ingrese el numero",type:"number",show:true},
   {id:2,name:"roomtype_id",type:"select",value:[],title:"Tipo de habitacion",select:"http://192.168.56.1:8080/typeroom"}
 ]
 
+
+
+const typeRoom_input_edit
+= [
+  
+  {id:1,name:"descr",value:[],title:"Descripción",placeholder:"Ingresa la descripción",type:"text",show:true},
+  {id:2,name:"price",value:[],title:"Precio",placeholder:"Ingresa el precio", type:"number",show:true},
+  {id:3,name:"title",value:[],title:"Titulo",placeholder:"Ingresa el titulo", type:"text",show:true}
+]
 const inicialization_R = {id:"",floor:0,"roomtype_id":"",};
 const typeRoom_input
 = [
   
-  {id:1,name:"descr",value:null,title:"Descripción",placeholder:"Ingresa la descripción",type:"text"},
-  {id:2,name:"price",value:null,title:"Precio",placeholder:"Ingresa el precio", type:"number"},
-  {id:3,name:"title",value:null,title:"Titulo",placeholder:"Ingresa el titulo", type:"text"}
+  {id:1,name:"descr",value:[],title:"Descripción",placeholder:"Ingresa la descripción",type:"text",show:true},
+  {id:2,name:"price",value:[],title:"Precio",placeholder:"Ingresa el precio", type:"number",show:true},
+  {id:3,name:"title",value:[],title:"Titulo",placeholder:"Ingresa el titulo", type:"text",show:true}
 ]
+
+
 const Room_show= [
   {id:0,name:"id",title:"Habitación",show:true},
   {id:1,name:"floor",title:"Piso",show:true},

@@ -3,7 +3,7 @@ import "../../../css/input_container.css"
 import { useState,useEffect } from "react";
 import { DropDown } from "../dropdowns/dropdown";
 import { DropDown_SO } from "../dropdowns/dropdown_Single";
-const Table_input = ({datos_send=null,setMostrar,handle_submit=null,handle_update=null,data})=>{
+const Table_input = ({edit=false,datos_send=null,setMostrar,handle_submit=null,handle_update=null,data})=>{
   const [id_edit,setId] = useState(null);
   const id = useId();
   useEffect(()=>{
@@ -32,7 +32,7 @@ const Table_input = ({datos_send=null,setMostrar,handle_submit=null,handle_updat
                         <label  htmlFor={dato.id+"-"+id}>{dato.title}</label>
                         {
                           (dato.type!="select")&&
-                          <input onChange={handle_update} type={dato.type}   className="input" id={dato.id+"-"+id} name={dato.name} value={datos_send[dato.name]} placeholder={dato.placeholder}/>
+                          <input onChange={handle_update} type={dato.type} disabled={dato?.edit&&edit}  className="input" id={dato.id+"-"+id} name={dato.name} value={datos_send[dato.name]} placeholder={dato.placeholder}/>
                         }
                         {
                           (dato.type=="select")&&<DropDown_SO dato_choosen={datos_send[dato.name]} name={dato.name} handle_update={handle_update} items={dato.value}/>
