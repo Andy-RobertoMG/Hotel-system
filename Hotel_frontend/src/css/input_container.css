@@ -1,7 +1,19 @@
 .input-container {
   display: flex;
   flex-direction: column;
-  gap:.5rem;
+  gap:1.5rem;
+}
+.input_body{
+  position: relative;
+}
+.error_input{
+  position: absolute;
+  padding: 0;
+  margin: 0rem;
+  color: red;
+  top: -1rem;
+  left: 0rem;
+  display: block;
 }
 .input{
   border-radius: .5rem;

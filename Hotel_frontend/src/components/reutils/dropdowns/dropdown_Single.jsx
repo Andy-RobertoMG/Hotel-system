@@ -8,7 +8,7 @@ import {BiRadioCircle} from 'react-icons/bi'
 /**
  * Este dropdown es para solo escoger un elemento
  */
-const DropDown_SO = ({dato_choosen=null,name='',handle_update=null,items=[],check=null})=>{
+const DropDown_SO = ({placeholder_,dato_choosen=null,name='',handle_update=null,items=[],check=null})=>{
   /**
    * Prop
    */
@@ -22,6 +22,7 @@ const DropDown_SO = ({dato_choosen=null,name='',handle_update=null,items=[],chec
   },[dato_choosen,items])
   useEffect(()=>{
     if(items.length>0){
+      console.log(placeholder_)
       setNotSelected(items);
       console.log(items)
       setItems_State({[dato_choosen]:true});
@@ -89,9 +90,9 @@ const DropDown_SO = ({dato_choosen=null,name='',handle_update=null,items=[],chec
     }
   }
   return <>
-    <div className="text">
+    <div className="body_input">
       <div className="selector_">
-        <input  className="input_" placeholder="Hola como "/>
+        <input  className="input_" placeholder={placeholder_}/>
           <i onClick={arrow_button}  className={`texto arrow ph-bold ph-caret-up `}></i>
       </div>
       <AnimatePresence>

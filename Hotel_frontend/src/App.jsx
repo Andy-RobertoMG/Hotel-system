@@ -10,9 +10,11 @@ import { Reception } from './components/reception/reception'
 import { Rooms } from './components/rooms/rooms'
 import DivTransformable from './components/divtransformable'
 import './css/maquetacion.css'
+import {useQueryClient} from "react-query"
 import { Clients } from './components/clients/clients'
 const Test = () => <h1 >Home</h1>
 function App() {
+  const queryClient = useQueryClient();
   const [count, setCount] = useState(0)
 
   return (

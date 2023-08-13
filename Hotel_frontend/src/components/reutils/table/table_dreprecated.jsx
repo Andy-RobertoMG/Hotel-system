@@ -5,13 +5,7 @@ import { Table_input } from "../table_input/table_input";
 import { useState } from "react";
 import { useEffect } from "react";
 import Eliminate from './../eliminate';
-import * as yup from "yup"
-yup.setLocale({
-  mixed: {
-    // notType: "${path} debe ser un tipo válido",
-    notType: "El campo debe estar lleno",
-  },
-});
+import {useForm} from "react-hook-form"
 const requestOptionsget={
   method:"GET",
   headers:{
@@ -46,22 +40,21 @@ const getCsrfToken = () => {
   return null;
 };
 
-const Tabla = ({schema,inicialization,edit,datos,show,reference,params=null,getAll=null})=>{
+const Tabla = ({inicialization,edit,datos,show,reference,params=null,getAll=null})=>{
   const [mostar_ti, setmostrar] = useState(false);
   const [temporal,setTemporal]= useState({});
   const [datos_send,setDatos] = useState({});
   const [mostrar_edit,setMostrar_edit] = useState(false);
   const [information,setInformation] = useState([]);
   const [id_search,setId] = useState(null);
-  const [errors, setErrors] = useState({});
+  const {register,handleSubmit}= useForm(); 
   const handle_update= (e)=>{
-    const {name,value,type} = e.target;
-    
+    const {name,value} = e.target;
     console.log(e.target);
-    console.log(e.target.type)
+    console.log(value)
     // Verifica si el valor es numérico utilizando la función isNaN (is Not a Number)
   // Si no es un número válido, no realiza la conversión y simplemente actualiza el estado
-  if (!isNaN(value)&&type!="text"){
+  if (!isNaN(value)) {
     // Convierte el valor a número usando parseFloat para números decimales
     // o parseInt para números 
     let parsedValue =value;
@@ -89,7 +82,6 @@ const Tabla = ({schema,inicialization,edit,datos,show,reference,params=null,getA
   useEffect(()=>{
     if(!mostar_ti||!mostrar_edit){
       SearchAll();
-      setErrors({});
     }
   },[mostar_ti,mostrar_edit])
   const getTableHeaders = () => {
@@ -132,69 +124,28 @@ const Tabla = ({schema,inicialization,edit,datos,show,reference,params=null,getA
     let url = reference+`/${e.target.id}`;
     let resultado = await fetch(url,{...requestOptionsDelete});
   }
-  const schema2 = yup.object().shape({
-  nombre: yup.string().required("El nombre es obligatorio"),
-  edad: yup.number().required("La edad es obligatoria").positive("La edad debe ser positiva"),
-  email: yup.string().email("El formato del correo electrónico no es válido"),
-});
-  const data2 = {
-  nombre: "Juan",
-  edad: 25,
-  email: "juan@example.com",
-};
-const Check2 = async()=>{
-  try{
-    console.log("Entra")
-    console.log(data2)
-    await schema2.validate(data2,{abortEarly:false})
-  }catch (validationErrors) {
-      const newErrors = {};
-      validationErrors.inner.forEach((error) => {
-        newErrors[error.path] = error.message;
-      });
-      console.log(newErrors)
-      // setErrors(newErrors);
-    }
-  
-}
-  const Check_data = async(data)=>{
-    console.log(datos_send)
-    try{
-      console.log(datos_send)
-      const resultado =await schema.validate(datos_send,{abortEarly:false});
-      console.log(resultado);
-    }catch (validationErrors) {
-      const newErrors = {};
-      validationErrors.inner.forEach((error) => {
-        newErrors[error.path] = error.message;
-      });
-      throw newErrors;
-    }
-  }
   const Create = async(e)=>{
     e.preventDefault();
-    await Check2();
     let objeto = datos_send;
-    try{
-      await Check_data();
-      setErrors({});
-      if(!objeto.id){
-        delete objeto.id;
-      }
-      try{
-        let resultado = await fetch(reference,{...requestOptionsPost,body:JSON.stringify(objeto)})
-          .then(response=>{
-          console.log(response)
-          return response.json()
-        });
-      }catch(e){
-        console.log(e);
-      }
-      setDatos(inicialization);
-      setmostrar(false);
-    }catch(error){
-      setErrors(error);
+    if(!objeto.id){
+      delete objeto.id;
     }
+    try{
+      let resultado = await fetch(reference,{...requestOptionsPost,body:JSON.stringify(objeto)})
+        .then(response=>{
+        console.log(response)
+        return response.json()
+      });
+    // console.log(resultado)
+    }catch(e){
+      console.log(e);
+    }
+    // console.log(resultado)
+    // console.log(resultado.body)
+    // console.log(resultado.errors)
+    // console.log(resultado.body.errors)
+    setDatos(inicialization);
+    setmostrar(false);
   }
   const Edition = async(e)=>{
     e.preventDefault();
@@ -203,16 +154,9 @@ const Check2 = async()=>{
     console.log(datos_send)
     console.log(url);
     console.log(requestOptionsPut)
-    try{
-      await Check_data();
-      setErrors({});
-      console.log(datos_send)
-      let resultado = await fetch(url,{...requestOptionsPut,body:JSON.stringify(datos_send)});
-      setDatos(inicialization);
-      setMostrar_edit(false)
-    }catch(error){
-      setErrors(error);
-    }
+    let resultado = await fetch(url,{...requestOptionsPut,body:JSON.stringify(datos_send)});
+    setDatos(inicialization);
+    setMostrar_edit(false)
   }
   const SearchAll = async ()=>{
     const resultado = await fetch(reference,requestOptionsget).then(
@@ -262,10 +206,10 @@ const Check2 = async()=>{
   return (
     <>
     {
-      mostar_ti&&<Table_input error={errors} datos_send={datos_send} setMostrar={setmostrar} handle_submit={Create} handle_update={handle_update} data={temporal}/>
+      mostar_ti&&<Table_input  datos_send={register} setMostrar={setmostrar} handle_submit={onSubmit_} handle_update={handle_update} data={temporal}/>
     }
     {
-      mostrar_edit&&<Table_input error={errors} edit={true} setMostrar={setMostrar_edit} handle_submit={Edition} handle_update={handle_update} datos_send={datos_send} data={temporal} />
+      mostrar_edit&&<Table_input edit={true} setMostrar={setMostrar_edit} handle_submit={Edition} handle_update={handle_update} datos_send={datos_send} data={temporal} />
     }
     <div className="outler">
     <div type="button">
@@ -289,14 +233,12 @@ const Check2 = async()=>{
                 information&&information.map((item)=>(
                     <tr key={item.id}>
                       {
-                        
                         getTableHeaders().map((child)=>{
                           console.log(child)
                           console.log(item)
                           // if(child?.key_foreign){
                           //   return <td key={child.id} id={item[child.name].id}>{item[child.name].title}</td>
                           // }
-                          
                           return <td key={child.id}>{item[child.name]}</td>
                         })
                       }
