@@ -1,18 +1,14 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import {Routes,Route} from 'react-router-dom'
 import {Login,Register} from './components/Login'
 import {Combinacion} from './components/Combinacion'
-
-import './App.css'
 import { Reception } from './components/reception/reception'
 import { Rooms } from './components/rooms/rooms'
 import DivTransformable from './components/divtransformable'
-import './css/maquetacion.css'
-import {useQueryClient} from "react-query"
 import { Clients } from './components/clients/clients'
 import { Reservation } from './components/reservation/reservation'
+import './css/maquetacion.css'
+import './App.css'
+import '../src/css/normalization.css'
 function App() {
     return (
     <>

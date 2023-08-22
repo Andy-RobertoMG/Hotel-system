@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom/dist"
 import "../../../css/sidebar.css"
 import {Menu} from './data';
@@ -176,11 +175,11 @@ const Sidebar = ({collapse,modify_collapse})=>{
         </div>
         {/* <div className="head">
           <div className="user-img">
-            <img alt="imgen"></img>
+          <img alt="imgen"></img>
           </div>
           <div className="user-details">
-            <p className="title">titulo</p>
-            <p className="name">web</p>
+          <p className="title">titulo</p>
+          <p className="name">web</p>
           </div>
         </div> */}
         <div className="nav">

@@ -1,5 +1,6 @@
 .sidebar{
   overflow: hidden;
+  position: absolute;
   background-color: #222222;
   display: flex;
   flex-direction: column;
@@ -23,6 +24,8 @@
   cursor: pointer;
   
 } */
+@media (min-width: 480px) {
+
 .father{
   position: relative;
   width: 100%;
@@ -295,6 +298,7 @@ span{
   background-color: black;
   transform: rotate(45deg);
   z-index: -1;
+}
 }
 
 
