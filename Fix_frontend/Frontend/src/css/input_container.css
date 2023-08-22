@@ -1,0 +1,90 @@
+.input-container {
+  display: flex;
+  flex-direction: column;
+  gap:1.5rem;
+}
+.input_body{
+  position: relative;
+}
+.error_input{
+  position: absolute;
+  padding: 0;
+  margin: 0rem;
+  color: red;
+  top: -1rem;
+  left: 0rem;
+  display: block;
+}
+.input{
+  border-radius: .5rem;
+  padding-left: .4rem;
+  height: 2.2rem;
+  border: .1rem solid black;
+  width: 90%;
+}
+label{
+  font-size: larger;
+  font-weight: bold;
+}
+.cuerpo_input{
+  /* position: absolute; */
+  position: fixed;
+  top:50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  z-index: 1;
+  width: 50rem;
+  height: 50rem;
+  border-radius: 1rem;
+  background-color: #fff;
+  padding: 1rem;
+  box-sizing: border-box;
+
+}
+.background{
+  position: fixed;
+  top:0;
+  left: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.579);
+  z-index:1;
+}
+.cuerpo_input > div,form{
+  display: flex;
+  flex-direction: column;
+}
+.text_in{
+  display: flex;
+  flex-wrap: wrap;
+  /* gap:10px; */
+}
+.text_in > div{
+  flex-basis: 50%;
+  margin-bottom: 1rem; 
+}
+.adjust_submit{
+  display: flex;
+  justify-content: center;
+  gap:1rem;
+  margin-top: 2rem;
+}
+.button_send{
+ border: none; 
+ outline: none;
+ font-family: Arial, Helvetica, sans-serif;
+ border-radius: .5rem;
+ height: 2rem;
+ width: 5rem;
+ background-color: rgba(28, 93, 153,.85);
+}
+.button_cancel{
+ border: none; 
+ outline: none;
+ font-family: Arial, Helvetica, sans-serif;
+ border-radius: .5rem;
+ height: 2rem;
+ width: 5rem;
+ background-color: rgba(222, 26, 26,.85);
+}

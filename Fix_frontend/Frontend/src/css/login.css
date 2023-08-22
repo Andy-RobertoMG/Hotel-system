@@ -1,0 +1,110 @@
+.login{
+  display: flex; 
+  justify-content: center; 
+  align-items: center;
+  background-color: #222222;
+  
+  height: 100vh;
+  margin: 0;
+  /* margin-left: 1rem; */
+  border-top-right-radius: 1rem;
+  /* border-bottom-right-radius: 3rem; */
+  border-bottom-right-radius: 1rem;
+  /* border-bottom-left-radius: 3rem; */
+}
+main{
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+}
+.logo{
+  width: 40%;
+  height: auto;
+  box-shadow: 0rem 0rem 5rem grey;
+  border-radius: 1rem;
+  background-size: auto 140%;
+  background-position: center center;
+  
+}
+.recovery{
+  margin-bottom: 1rem;
+}
+.recovery_text{
+  font-size:small ;
+  color:#ffff;
+  font-weight: 600;
+}
+.contorno{
+  /* float: right; */
+  display: inline;
+  padding: 0;
+  
+  align-items: center;
+  color: black;
+}
+.imagen{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  justify-content: center;
+}
+.formulario{
+  
+  display: inline;
+  width: 80%;
+}
+.contents{
+  margin-bottom: 1rem;
+}
+label{
+  margin-right: 1rem;
+
+}
+a{
+  border: none;
+  text-decoration: none;
+
+}
+.input_space{
+  display: flex;
+  justify-content: space-between;
+}
+input{
+  border:none;
+  
+}
+.buttons_in{
+  border-radius: 30px;
+  background-color: #D9D9D9;
+  padding-top: .5rem;
+  padding-bottom: .5rem;
+  width: 6.5rem;
+  text-align: center;
+  color:black;
+  font-weight:bold;
+}
+body{
+  /* background-color: rgba(255, 255, 255,.9); */
+  /* background-color: red; */
+}
+.loginput{
+  font-size: large;
+  border:none;
+  border-bottom: .15rem  solid rgba(119, 119, 119,.5);
+  background: transparent;
+  outline: none;
+  height: 1.5rem;
+  color: #ffff;
+  width: 100%;
+  padding: 0%;
+  margin-bottom: 1rem;
+}
+::placeholder{
+  color: #ffff;
+}
+body{
+  font-family: sans-serif;
+  color: white;
+  /* background-color: #F5F1ED;
+   */
+   background-color: #FCF7FF;
+}
