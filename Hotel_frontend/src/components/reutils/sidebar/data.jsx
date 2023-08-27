@@ -1,5 +1,6 @@
 const Menu =[
   {
+    name:"Habitaciones",
     data:"rooms",
     id:1
   },

@@ -1,5 +1,6 @@
 .sidebar{
-  
+  overflow: hidden;
+  position: absolute;
   background-color: #222222;
   display: flex;
   flex-direction: column;
@@ -14,16 +15,17 @@
   
   /* overflow-y: scroll; */
 }
-button{
+/* button{
   padding: 0;
   background: none;
   border: none;
   color: inherit;
   font: inherit;
   cursor: pointer;
-  /* background-color: #222222; */
   
-}
+} */
+@media (min-width: 480px) {
+
 .father{
   position: relative;
   width: 100%;
@@ -233,6 +235,10 @@ span{
   font-size: small;
 
 }
+.maquetacion.toggle{
+  display: grid;
+  /* grid-template-columns: "12 rem" auto; */
+}
 .maquetacion.toggle .menu ul li .arrow{
   display: none;
 }
@@ -292,6 +298,7 @@ span{
   background-color: black;
   transform: rotate(45deg);
   z-index: -1;
+}
 }
 
 

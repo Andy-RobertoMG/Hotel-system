@@ -18,15 +18,15 @@ const DropDown_SO = ({placeholder_,dato_choosen=null,name='',handle_update=null,
   const [showAnimation, setShowAnimation] = useState(false);
   
   useEffect(()=>{
-    console.log(dato_choosen,items);
+    // console.log(dato_choosen,items);
   },[dato_choosen,items])
   useEffect(()=>{
     if(items.length>0){
-      console.log(placeholder_)
+      // console.log(placeholder_)
       setNotSelected(items);
-      console.log(items)
+      // console.log(items)
       setItems_State({[dato_choosen]:true});
-      console.log(dato_choosen)
+      // console.log(dato_choosen)
       // if()
       // const {id} = dato_choosen;
       // setItems_State({id:true})
@@ -37,7 +37,7 @@ const DropDown_SO = ({placeholder_,dato_choosen=null,name='',handle_update=null,
   useEffect(()=>{
     if(items_state){
       const objeto = {target:{name:name,value:Object.keys(items_state)[0]}};
-      console.log(objeto)
+      // console.log(objeto)
       handle_update(objeto);
     }
   },[items_state])
@@ -45,18 +45,18 @@ const DropDown_SO = ({placeholder_,dato_choosen=null,name='',handle_update=null,
     const sortedArray = items_Not_Selected.sort((a,b)=>{
       return a.title.localeCompare(b.title);
     })
-    console.log(sortedArray)
+    // console.log(sortedArray)
     return sortedArray;
   },[items_Not_Selected])
   const items_Selected_Sort =  useMemo(()=>{
     const sortedArray = items_selected.sort((a,b)=>{
       return a.title.localeCompare(b.title);
     })
-    console.log(sortedArray)
+    // console.log(sortedArray)
     return sortedArray;
   },[items_Not_Selected])
   const arrow_button = ()=>{
-    console.log(items_state)
+    // console.log(items_state)
     if(showAnimation||!showAnimation){
       let aux_Selected=[];
       let aux_NotSelected=[];
@@ -77,16 +77,16 @@ const DropDown_SO = ({placeholder_,dato_choosen=null,name='',handle_update=null,
   }
 
   useEffect(()=>{
-    console.log(items_state)
-    console.log(items_selected)
-    console.log(items_Not_Selected);
+    // console.log(items_state)
+    // console.log(items_selected)
+    // console.log(items_Not_Selected);
   },[items_state])
   const OnSelect = (e)=>{
-    console.log(e.target)
+    // console.log(e.target)
     if(e.target.id)
     {
       setItems_State({[e.target.id]:true})
-      console.log(items_state)
+      // console.log(items_state)
     }
   }
   return <>

@@ -1,7 +1,7 @@
 const update = (setUser)=>setUser("Esteban")
 import { useState } from 'react';
 import "../css/login.css"
-import logo from '../img/logo1.jpg'
+// import logo from '../img/logo1.jpg'
 import { Link } from 'react-router-dom/dist';
 import { Navigate } from 'react-router-dom';
 

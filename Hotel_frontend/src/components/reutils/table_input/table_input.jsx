@@ -8,15 +8,15 @@ const Table_input = ({error,edit=false,datos_send=null,setMostrar,handle_submit=
   const id = useId();
   useEffect(()=>{
     if(data){
-      console.log(id_edit)
-      console.log(data)
-      console.log(datos_send)
+      // console.log(id_edit)
+      // console.log(data)
+      // console.log(datos_send)
     }
   },[data,datos_send])
   useEffect(()=>{
     setId(datos_send.id);
   },[])
-  console.log("hola");
+  // console.log("hola");
   return <>
       <div className="cuerpo_input">
         <div className="cartel">

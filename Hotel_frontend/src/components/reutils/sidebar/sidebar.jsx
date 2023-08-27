@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom/dist"
 import "../../../css/sidebar.css"
 import {Menu} from './data';
@@ -12,7 +11,9 @@ import { v4 as uuidv4 } from 'uuid';
 import { delay } from "framer-motion";
 
 const SubMenuItem = ({collapse=null,to=null, text, subMenuItems=null,idActual=null,setIdActual=null}) => {
-  
+  useEffect(()=>{
+    console.log(to);
+  },[])
   const [idActual_sub,setIdActual_sub] = useState("");
   const [showSubMenu, setShowSubMenu] = useState(false);
   const [click,setClick] = useState(false);
@@ -100,7 +101,7 @@ const SubMenuItem = ({collapse=null,to=null, text, subMenuItems=null,idActual=nu
 
   return (
     <li onClick={toggleSubMenu}>
-      <a href="#"  >
+      <Link to={to}  >
         <motion.i
           initial={{fontSize:'1rem'}}
           className={`icon ph-bold ph-house-simple`}
@@ -116,7 +117,7 @@ const SubMenuItem = ({collapse=null,to=null, text, subMenuItems=null,idActual=nu
         {subMenuItems&&(
           <i  className={`arrow ph-bold ${(showSubMenu) ? "ph-caret-up" : "ph-caret-down"}`}></i>
         )}
-      </a>
+      </Link>
       {
         subMenuItems&& (
           <motion.ul 
@@ -166,7 +167,7 @@ const Sidebar = ({collapse,modify_collapse})=>{
   const cajaHijaRef = useRef(null);
   return (
     <>
-      <aside ref={cajaPadreRef} className={`sidebar`} >
+      <aside ref={cajaPadreRef} className={`sidebar `} >
         <div className="father">
           <button disabled={isButtonDisabled} ref={cajaHijaRef}  onClick={modify_collapse }className={`box_toggle`}>
             <FaBars className={`box_toggle`}/>
@@ -174,11 +175,11 @@ const Sidebar = ({collapse,modify_collapse})=>{
         </div>
         {/* <div className="head">
           <div className="user-img">
-            <img alt="imgen"></img>
+          <img alt="imgen"></img>
           </div>
           <div className="user-details">
-            <p className="title">titulo</p>
-            <p className="name">web</p>
+          <p className="title">titulo</p>
+          <p className="name">web</p>
           </div>
         </div> */}
         <div className="nav">
@@ -188,13 +189,12 @@ const Sidebar = ({collapse,modify_collapse})=>{
             </p>
             <ul className="test_1">
               <SubMenuItem  text="Dashboard"  />
-              <SubMenuItem  text="Reserva "  />
+              <SubMenuItem to={"reservation"} text="Reservaciones "  />
               <SubMenuItem  text="Recepción"  />
               <SubMenuItem  text="Punto de Venta"  />
               <SubMenuItem  text="Verificación de Salidas"  />
               <SubMenuItem  text="Reportes"  />
               <SubMenuItem to={'client'} text="Clientes"  />
-              <SubMenuItem  text="Reserva"  />
               <SubMenuItem {...{collapse,idActual,setIdActual}} text="Hola" subMenuItems={Menu}/>
               <SubMenuItem {...{collapse,idActual,setIdActual}} text="Hola" subMenuItems={Menu}/>
               <SubMenuItem  text="Dashboard"  />
