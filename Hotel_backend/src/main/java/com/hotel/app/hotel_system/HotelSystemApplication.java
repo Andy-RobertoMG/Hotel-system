@@ -20,8 +20,8 @@ public class HotelSystemApplication {
 	@Bean
     public CorsFilter corsFilter() {
          CorsConfiguration corsConfig = new CorsConfiguration();
-				 corsConfig.setAllowedOriginPatterns(List.of("*")); // Use allowedOriginPatterns instead of allowedOrigins
-        // corsConfig.addAllowedOrigin("*"); // Permit all origins (for testing, you can restrict this to specific domains)
+				 corsConfig.setAllowedOriginPatterns(Collections.singletonList("*")); // Use allowedOriginPatterns instead of allowedOrigins
+        corsConfig.addAllowedOrigin("http://192.168.56.1:5173"); // Permit all origins (for testing, you can restrict this to specific domains)
         corsConfig.addAllowedMethod("*"); // Permit all HTTP methods (GET, POST, PUT, etc.)
         corsConfig.addAllowedHeader("*"); // Permit all HTTP headers
         corsConfig.setAllowCredentials(true); // Allow sending credentials (e.g., cookies)

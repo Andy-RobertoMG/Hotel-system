@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,8 +26,10 @@ import com.hotel.app.hotel_system.helper.Message;
 // import com.hotel.app.hotel_system.models.dao.IRoomDao_deprecated;
 import com.hotel.app.hotel_system.models.dto.RoomDTO;
 import com.hotel.app.hotel_system.models.dto.RoomTypeDTO;
+import com.hotel.app.hotel_system.models.dto.UsersDTO;
 import com.hotel.app.hotel_system.models.entity.Room;
 import com.hotel.app.hotel_system.models.entity.RoomType;
+import com.hotel.app.hotel_system.models.entity.Users;
 import com.hotel.app.hotel_system.service.RTservice;
 import com.hotel.app.hotel_system.service.Rservice;
 
@@ -73,7 +76,7 @@ public class RoomController {
    private RTservice rt_service;
    @GetMapping("/rooms")
    @ResponseStatus(value = HttpStatus.OK)
-   public List<RoomDTO> FindAll(){
+   public List<RoomDTO> FindAll(@AuthenticationPrincipal UsersDTO user){
       List<Room> listaRooms = r_service.getRs();
       List<RoomDTO> listaDTO = new ArrayList<RoomDTO>();
       for(Room habitacion: listaRooms){
@@ -85,7 +88,7 @@ public class RoomController {
 
    // @RequestMapping(value = "/rooms",method = RequestMethod.POST)
    @PostMapping("/rooms")
-   public ResponseEntity<RoomDTO> create(@RequestBody RoomDTO room) throws RoomTypeNotFoundException{
+   public ResponseEntity<RoomDTO> create(@AuthenticationPrincipal UsersDTO user,@RequestBody RoomDTO room) throws RoomTypeNotFoundException{
       Message message = new Message("Se ha editado exitosamente");
       Room auxiliar= new Room();
       auxiliar.setFloor(room.getFloor());

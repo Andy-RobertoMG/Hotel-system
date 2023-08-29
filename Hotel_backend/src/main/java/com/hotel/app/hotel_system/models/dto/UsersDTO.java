@@ -20,6 +20,14 @@ public class UsersDTO {
   public UsersDTO(){
 
   }
+  public UsersDTO(UUID id,String name,int phone_number,String email,String pass, UUID rol_id){
+    this.id = id;
+    this.name = name;
+    this.email= email;
+    this.pass = pass;
+    this.phone_number= phone_number;
+    this.rol_id = rol_id;
+  }
   public UsersDTO(UUID id,String name,int phone_number,String email,String pass, Rol rol_id){
     this.id = id;
     this.name = name;
