@@ -28,6 +28,7 @@ public class SecurityConfig {
     return http.csrf(csrf-> csrf.disable()).headers().addHeaderWriter(new StaticHeadersWriter("Set-Cookie", "SameSite=None; Secure")).and().cors().and().
     authorizeHttpRequests(authRequest->
     authRequest .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/auth/**")).permitAll()
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/rooms")).hasRole("NUEVO")
                 .anyRequest().authenticated())
     .sessionManagement(sessionManager->
     sessionManager

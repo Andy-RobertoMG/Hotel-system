@@ -2,6 +2,7 @@ package com.hotel.app.hotel_system.models.entity;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.UUID;
 import java.util.List;
 
@@ -157,7 +158,9 @@ public class Users  implements UserDetails{
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // TODO Auto-generated method stub
-        return List.of(new SimpleGrantedAuthority(rol_id.getName()));
+        System.out.println("Rol de usuario:"+rol_id.getName().toUpperCase());
+        return Collections.singleton(new SimpleGrantedAuthority("ROLE_"+rol_id.getName().toUpperCase()));
+        // return List.of(new SimpleGrantedAuthority(rol_id.getName()));
     }
     
     @Override
