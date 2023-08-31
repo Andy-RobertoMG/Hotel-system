@@ -30,9 +30,9 @@ public class UsersDTO {
   }
   public UsersDTO(Users user){
     this.id = user.getId();
-    this.name = user.getName();
+    this.name = user.getUsername();
     this.email = user.getEmail();
-    this.pass= user.getPass();
+    this.pass= user.getPassword();
     this.phone_number = user.getPhoneNumber();
     this.rol_id = user.getRol_id().getId();
   }

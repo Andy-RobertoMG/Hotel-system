@@ -39,9 +39,9 @@ public class UsersController {
     for(Users user: List_user){
       UsersDTO aux = new UsersDTO();
       aux.setId(user.getId());
-      aux.setName(user.getName());
+      aux.setName(user.getUsername());
       aux.setEmail(user.getEmail());
-      aux.setPass(user.getPass());
+      aux.setPass(user.getPassword());
       aux.setPhone_number(user.getPhoneNumber());
       aux.setRol_id(user.getRol_id().getId());
       List_UserDTO.add(aux);

@@ -1,11 +1,16 @@
 package com.hotel.app.hotel_system.models.entity;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.UUID;
+import java.util.List;
 
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UuidGenerator;
 import org.hibernate.type.SqlTypes;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonFormatTypes;
@@ -23,7 +28,7 @@ import jakarta.validation.constraints.Email;
 
 @Entity
 @Table(name="users")
-public class Users  implements Serializable{
+public class Users  implements UserDetails{
     private static final long serialVersionUID = 2990602998676380780L;
 
     @Id
@@ -32,18 +37,18 @@ public class Users  implements Serializable{
     @UuidGenerator
     private UUID id;
     
-    @Column
-    private String name;
+    @Column(name="name")
+    private String username;
 
     @Column(name="phone_number")
     private int phoneNumber;
 
-    @Column
+    @Column()
     // @Email
     private String email;
 
-    @Column
-    private String pass;
+    @Column(name="pass")
+    private String password;
 
     @ManyToOne(fetch= FetchType.LAZY)
     @JoinColumn(name="rol_id",referencedColumnName = "id")
@@ -53,10 +58,10 @@ public class Users  implements Serializable{
 
     }
     public Users(String name,int phoneNumber,String email,String pass,Rol rol_id){
-        this.name = name;
+        this.username = name;
         this.phoneNumber = phoneNumber;
         this.email=email;
-        this.pass= pass;
+        this.password= pass;
         this.rol_id= rol_id;
     }
     /**
@@ -77,15 +82,15 @@ public class Users  implements Serializable{
     /**
      * @return String return the name
      */
-    public String getName() {
-        return name;
+    public String getUsername() {
+        return username;
     }
 
     /**
      * @param name the name to set
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String name) {
+        this.username = name;
     }
 
    
@@ -106,15 +111,15 @@ public class Users  implements Serializable{
     /**
      * @return String return the pass
      */
-    public String getPass() {
-        return pass;
+    public String getPassword() {
+        return password;
     }
 
     /**
      * @param pass the pass to set
      */
-    public void setPass(String pass) {
-        this.pass = pass;
+    public void setPassword(String pass) {
+        this.password = pass;
     }
 
 
@@ -149,5 +154,32 @@ public class Users  implements Serializable{
     public void setRol_id(Rol rol_id) {
         this.rol_id = rol_id;
     }
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        // TODO Auto-generated method stub
+        return List.of(new SimpleGrantedAuthority(rol_id.getName()));
+    }
+    
+    @Override
+    public boolean isAccountNonExpired() {
+        // TODO Auto-generated method stub
+        return true;
+    }
+    @Override
+    public boolean isAccountNonLocked() {
+        // TODO Auto-generated method stub
+        return true;
+    }
+    @Override
+    public boolean isCredentialsNonExpired() {
+        // TODO Auto-generated method stub
+        return true;
+    }
+    @Override
+    public boolean isEnabled() {
+        // TODO Auto-generated method stub
+        return true;
+    }
+   
 
 }
