@@ -2,6 +2,8 @@ package com.hotel.app.hotel_system.security.controller;
 
 import org.apache.catalina.connector.Response;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +15,7 @@ import com.hotel.app.hotel_system.security.service.AuthService;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
@@ -40,5 +43,18 @@ public class AuthController {
     return ResponseEntity.ok("funciona");
      
 
+  }
+  @GetMapping("/logout")
+  public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response) {
+      // Elimina la cookie de autenticación (si estás usando cookies)
+      Cookie cookie = new Cookie("auth_by_cookie", null);
+      cookie.setMaxAge(0);
+      cookie.setPath("/");
+      response.addCookie(cookie);
+
+      // Limpia el contexto de seguridad
+      SecurityContextHolder.clearContext();
+
+      return ResponseEntity.ok("Logout successful");
   }
 }
