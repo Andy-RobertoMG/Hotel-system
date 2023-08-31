@@ -32,7 +32,7 @@ public class AuthService {
     Optional<Rol> rol = rolRepository.findById(UUID.fromString("b0725745-33f3-46e7-99ed-a58f9771caa4"));
     // System.out.println(rol.get().getName());
     if(rol.isPresent()){
-      Users user = new Users(request.getUsername(), request.getPhone_number(), request.getEmail(), request.getPassword(),rol.get());
+      Users user = new Users(request.getUsername(), request.getPhone_number(), request.getEmail(), passwordEncoder.encode(request.getPassword()),rol.get());
       usersRepository.save(user);
       String Token =jwtService.getToken(user); 
       System.out.println(Token);

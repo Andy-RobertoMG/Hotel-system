@@ -10,5 +10,5 @@ import com.hotel.app.hotel_system.models.entity.Users;
 
 @Repository("UsersRepository")
 public interface UsersRepository extends JpaRepository<Users,UUID> {
-  Optional<Users> findByUsername(String Username);
+  Optional<Users> findByUsername(String username);
 }

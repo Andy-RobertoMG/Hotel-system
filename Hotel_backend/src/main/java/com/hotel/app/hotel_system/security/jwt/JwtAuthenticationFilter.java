@@ -4,23 +4,48 @@ import java.io.IOException;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import com.hotel.app.hotel_system.models.repository.UsersRepository;
+import com.hotel.app.hotel_system.security.service.JwtService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import jakarta.servlet.http.Cookie;
 @Component
+// @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
   public static final String COOKIE_NAME = "auth_by_cookie";
+  private final JwtService jwtService;
+  private final UserDetailsService userDetailsService;
+  private final UsersRepository usersRepository; 
+  @Autowired
+  public JwtAuthenticationFilter(JwtService jwtService,UserDetailsService userDetailsService,UsersRepository usersRepository){
+    this.jwtService = jwtService;
+    this.userDetailsService = userDetailsService;
+    this.usersRepository = usersRepository;
+
+  }
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {
       Optional<Cookie> cookieAuth=Stream.of(Optional.ofNullable(request.getCookies()).orElse(new Cookie[0])).filter(
           cookie-> COOKIE_NAME.equals(cookie.getName())&&cookie.getValue().length()>0).findFirst();
+      String token = null;
+      String username = null;
+      if(cookieAuth.isPresent()&&cookieAuth.get().getValue().length()>0){
+        token = cookieAuth.get().getValue();
+      }
 
       // String[] tokenContainer = new String[1];
       //   cookieAuth.ifPresent(cookie->
@@ -34,6 +59,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       if(!cookieAuth.isPresent()){
         filterChain.doFilter(request, response);
         return;
+      }
+      username = jwtService.getUsernameFromToken(token);
+      System.out.println(token);
+      if(username !=null&&SecurityContextHolder.getContext().getAuthentication()==null){
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        if(jwtService.isTokenValid(token,userDetails)){
+          UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+            username, null,userDetails.getAuthorities());
+            authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+          System.out.println("Username:"+username+" Token:"+authToken);
+          SecurityContextHolder.getContext().setAuthentication(authToken);
+        }
       }
       System.out.println("Pasa por aqui");
       filterChain.doFilter(request, response);

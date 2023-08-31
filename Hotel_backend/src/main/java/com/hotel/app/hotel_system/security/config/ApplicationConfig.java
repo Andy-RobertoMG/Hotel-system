@@ -1,5 +1,7 @@
 package com.hotel.app.hotel_system.security.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,6 +20,8 @@ import lombok.RequiredArgsConstructor;
 @Configuration
 @RequiredArgsConstructor
 public class ApplicationConfig {
+  @Autowired
+  @Qualifier("UsersRepository")
   private UsersRepository usersRepository;
   @Bean
   public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception{
@@ -35,7 +39,8 @@ public class ApplicationConfig {
   public PasswordEncoder passwordEncoder(){
     return new BCryptPasswordEncoder();
   }
-  private UserDetailsService userDetailsService(){
+  @Bean
+  public UserDetailsService userDetailsService(){
     return username->usersRepository.findByUsername(username).orElseThrow(()-> new UsernameNotFoundException("User not found"));
   }
 }

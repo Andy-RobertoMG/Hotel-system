@@ -50,7 +50,7 @@ public class Users  implements UserDetails{
     @Column(name="pass")
     private String password;
 
-    @ManyToOne(fetch= FetchType.LAZY)
+    @ManyToOne(fetch= FetchType.EAGER)
     @JoinColumn(name="rol_id",referencedColumnName = "id")
     private Rol rol_id;
 
