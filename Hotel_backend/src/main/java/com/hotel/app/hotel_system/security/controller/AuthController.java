@@ -1,17 +1,28 @@
 package com.hotel.app.hotel_system.security.controller;
 
 import org.apache.catalina.connector.Response;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hotel.app.hotel_system.helper.Message;
+import com.hotel.app.hotel_system.security.LoginRequest;
 import com.hotel.app.hotel_system.security.RegisterRequest;
+import com.hotel.app.hotel_system.security.entity.AuthResponse;
+import com.hotel.app.hotel_system.security.helper.MessageAuthenticate;
 import com.hotel.app.hotel_system.security.jwt.JwtAuthenticationFilter;
 import com.hotel.app.hotel_system.security.service.AuthService;
+import com.hotel.app.hotel_system.security.service.JwtService;
+import com.hotel.app.hotel_system.service.UserService;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
@@ -23,15 +34,29 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
+  // @Autowired
+  // @Qualifier("UsersService")
   private final AuthService authService;
-  @PostMapping(value = "login")
-  public String login(){
-    return "L";
+  private final AuthenticationManager authenticationManager;
+  private final JwtService jwtService;
+  @PostMapping(value = "/login")
+  public MessageAuthenticate login(@RequestBody LoginRequest request,HttpServletResponse response){
+    System.out.println(request.getUsername());
+    System.out.println(request.getPassword());
+    authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(),request.getPassword()));
+    response.addCookie(authService.login(request));
+    return new MessageAuthenticate("Autorizado", true);
+    // return new AuthResponse(token);
+    // return "dasdaw";
 
+  }
+  @GetMapping(value = "/autologin")
+  public MessageAuthenticate autoLogin()throws Exception{
+    return new MessageAuthenticate("Autorizado", true);
   }
   @PostMapping(value = "/register")
   public ResponseEntity<String> register(@RequestBody RegisterRequest request,HttpServletResponse response) throws Exception{
-    
+    System.out.println("dadwwd");
     Cookie cookie =new Cookie(JwtAuthenticationFilter.COOKIE_NAME,authService.register(request));
     cookie.setHttpOnly(true);
     cookie.setSecure(false);

@@ -22,6 +22,7 @@ public class JwtService {
     return getToken(new HashMap<>(),user);
   } 
   public String getToken(Map<String,Object> extraClaims,UserDetails user){
+    System.out.println("test");
     return  Jwts.builder()
             .setClaims(extraClaims)
             .setSubject(user.getUsername())

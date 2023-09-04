@@ -3,6 +3,7 @@ package com.hotel.app.hotel_system.security.service;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -13,17 +14,31 @@ import com.hotel.app.hotel_system.models.repository.UsersRepository;
 import com.hotel.app.hotel_system.security.LoginRequest;
 import com.hotel.app.hotel_system.security.RegisterRequest;
 import com.hotel.app.hotel_system.security.entity.AuthResponse;
+import com.hotel.app.hotel_system.security.jwt.JwtAuthenticationFilter;
+import com.hotel.app.hotel_system.service.UserService;
+
+import jakarta.servlet.http.Cookie;
 @Service
 public class AuthService {
   private final RolRepository rolRepository;
   private final UsersRepository usersRepository;
   private final JwtService jwtService;
+  private final UserService userService;
   private final PasswordEncoder passwordEncoder;
-  public AuthResponse login(LoginRequest request){
-    return null;
+  public Cookie login(LoginRequest request){
+    UserDetails user = userService.SearchByName(request.getUsername());
+    String token = jwtService.getToken(user);
+    Cookie cookie = new Cookie(JwtAuthenticationFilter.COOKIE_NAME, token);
+    cookie.setHttpOnly(true);
+    cookie.setSecure(false);
+    cookie.setMaxAge(30 * 24 * 60 * 60);
+    // cookie.setDomain("http://localhost:5173/");
+    cookie.setPath("/");
+    return cookie;
   }
-  public AuthService(RolRepository rolRepository,UsersRepository usersRepository,JwtService jwtService,PasswordEncoder passwordEncoder){
+  public AuthService(RolRepository rolRepository,UsersRepository usersRepository,JwtService jwtService,PasswordEncoder passwordEncoder,UserService userService){
     this.rolRepository = rolRepository;
+    this.userService = userService;
     this.usersRepository = usersRepository;
     this.jwtService = jwtService;
     this.passwordEncoder = passwordEncoder;

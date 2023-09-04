@@ -41,6 +41,16 @@ public class UserService implements UsersServiceI{
       return new Users();
     }
   }
+
+  @Override
+  public Users SearchByName(String name) {
+    // TODO Auto-generated method stub
+    Optional<Users> user = user_crud.findByUsername(name);
+    if(user.isPresent()){
+      return user.get();
+    }
+    return new Users();
+  }
   
     
 }

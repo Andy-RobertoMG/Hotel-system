@@ -9,4 +9,5 @@ public interface UsersServiceI {
   List<Users> getAllUsers();
   Users createUser(Users user);
   Users SearchById(UUID id);
+  Users SearchByName(String name);
 }
