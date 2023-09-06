@@ -19,24 +19,25 @@ const requestOptionsget={
   headers:{
     'Content-Type':'application/json',
   },
+  credentials:"include"
 }
 const requestOptionsDelete={
   method:"DELETE",
   headers:{
     'Content-Type':'application/json',
-  },
+  },credentials:"include",
 }
 const requestOptionsPut={
   method:"PUT",
   headers:{
     'Content-Type':'application/json',
-  },
+  },credentials:"include",
 }
 const requestOptionsPost={
   method:"POST",
   headers:{
     'Content-Type':'application/json',
-  },
+  },credentials:"include",
 }
 
 const getCsrfToken = () => {
@@ -198,6 +199,7 @@ const Tabla = ({schema,inicialization,edit,datos,show,reference,params=null,getA
     })
      
   }
+  
   const schema2 = yup.object().shape({
   nombre: yup.string().required("El nombre es obligatorio"),
   edad: yup.number().required("La edad es obligatoria").positive("La edad debe ser positiva"),
@@ -277,7 +279,7 @@ const Check2 = async()=>{
       await Check_data();
       setErrors({});
       console.log(datos_send)
-      let resultado = await fetch(url,{...requestOptionsPut,body:JSON.stringify(datos_send)}).then(async res=>{
+      let resultado = await fetch(url,{...requestOptionsPut,body:JSON.stringify(datos_send),credentials:"include"}).then(async res=>{
         return  await res.json();
       });
       const objeto = update_table(resultado,information);
