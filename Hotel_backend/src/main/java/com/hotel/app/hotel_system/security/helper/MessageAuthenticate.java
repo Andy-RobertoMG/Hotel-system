@@ -1,10 +1,10 @@
 package com.hotel.app.hotel_system.security.helper;
 
 public class MessageAuthenticate {
-    private String message;
+    private String rol;
     private boolean authenticated;
     public MessageAuthenticate(String message,boolean authenticated){
-      this.message = message;
+      this.rol = message;
       this.authenticated = authenticated;
     }
     
@@ -12,15 +12,15 @@ public class MessageAuthenticate {
     /**
      * @return String return the message
      */
-    public String getMessage() {
-        return message;
+    public String getRol() {
+        return rol;
     }
 
     /**
      * @param message the message to set
      */
-    public void setMessage(String message) {
-        this.message = message;
+    public void setRol(String message) {
+        this.rol = message;
     }
 
     /**

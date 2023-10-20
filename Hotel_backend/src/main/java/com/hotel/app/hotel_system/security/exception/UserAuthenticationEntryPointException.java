@@ -29,6 +29,6 @@ public class UserAuthenticationEntryPointException implements AuthenticationEntr
     // TODO Auto-generated method stub
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-        Mapper.writeValue(response.getOutputStream(), new MessageAuthenticate("Autorizado", false));
+        Mapper.writeValue(response.getOutputStream(), new MessageAuthenticate("Autorización", false));
   } 
 }

@@ -10,4 +10,5 @@ public interface UsersServiceI {
   Users createUser(Users user);
   Users SearchById(UUID id);
   Users SearchByName(String name);
+  void deleteUser(UUID id);
 }

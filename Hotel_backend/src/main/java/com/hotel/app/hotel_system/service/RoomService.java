@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import com.hotel.app.hotel_system.exception.RoomNotFoundException;
@@ -16,7 +18,9 @@ public class RoomService implements Rservice{
   @Autowired
   @Qualifier("Rrepository")
   private RoomRepository crud;
-
+  public Page<Room> getAllRooms(org.springframework.data.domain.Pageable pageable){
+    return crud.findAll(pageable);
+  }
   @Override
   public Room insertarR(Room room) {
     // TODO Auto-generated method stub

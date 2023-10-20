@@ -31,9 +31,11 @@ public class SecurityConfig {
     return http.csrf(csrf-> csrf.disable()).headers().addHeaderWriter(new StaticHeadersWriter("Set-Cookie", "SameSite=None; Secure")).and().cors().and().
     exceptionHandling().authenticationEntryPoint(userAuthenticationEntryPoint).and().
     authorizeHttpRequests(authRequest->
-    authRequest .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/auth/**")).permitAll()
+    authRequest .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/**")).permitAll()
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/**")).permitAll()
                 .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.GET, "/rooms")).hasRole("NUEVO")
-                .anyRequest().authenticated())
+                .anyRequest().authenticated()
+                )
     .sessionManagement(sessionManager->
     sessionManager
       .sessionCreationPolicy(SessionCreationPolicy.STATELESS))

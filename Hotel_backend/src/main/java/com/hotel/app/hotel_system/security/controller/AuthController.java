@@ -1,11 +1,15 @@
 package com.hotel.app.hotel_system.security.controller;
 
+import java.util.Optional;
+import java.util.stream.Stream;
+
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hotel.app.hotel_system.helper.Message;
+import com.hotel.app.hotel_system.models.entity.Users;
 import com.hotel.app.hotel_system.security.LoginRequest;
 import com.hotel.app.hotel_system.security.RegisterRequest;
 import com.hotel.app.hotel_system.security.entity.AuthResponse;
@@ -34,8 +39,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
-  // @Autowired
-  // @Qualifier("UsersService")
+  // private final UserService userService;
   private final AuthService authService;
   private final AuthenticationManager authenticationManager;
   private final JwtService jwtService;
@@ -51,8 +55,8 @@ public class AuthController {
 
   }
   @GetMapping(value = "/autologin")
-  public MessageAuthenticate autoLogin()throws Exception{
-    return new MessageAuthenticate("Autorizado", true);
+  public MessageAuthenticate autoLogin(HttpServletResponse response,HttpServletRequest request)throws Exception{
+    return authService.autoLogin(request, response);
   }
   @PostMapping(value = "/register")
   public ResponseEntity<String> register(@RequestBody RegisterRequest request,HttpServletResponse response) throws Exception{

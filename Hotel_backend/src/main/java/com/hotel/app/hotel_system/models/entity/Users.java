@@ -13,6 +13,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonFormatTypes;
 
@@ -50,9 +51,10 @@ public class Users  implements UserDetails{
 
     @Column(name="pass")
     private String password;
-
-    @ManyToOne(fetch= FetchType.EAGER)
+    // @JsonBackReference
+    @ManyToOne(fetch= FetchType.LAZY)
     @JoinColumn(name="rol_id",referencedColumnName = "id")
+    @JsonBackReference // Marcar la relación inversa para evitar ciclo en la serialización
     private Rol rol_id;
 
     public Users(){
