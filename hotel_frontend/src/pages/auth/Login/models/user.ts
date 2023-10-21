@@ -1,4 +1,4 @@
-export interface User_login{
+export interface user{
     password:string;
     username:string;
 }

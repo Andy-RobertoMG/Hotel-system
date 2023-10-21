@@ -18,6 +18,13 @@
 //         username:"",
 //         password:""
 //     })
+
+import { Link, useNavigate } from "react-router-dom";
+import { login } from "../../../services/userAuth";
+import { Auth } from "../../../models";
+import { user } from "./models";
+import { useState } from "react";
+
     
 //     const handleInput= async(event)=>{
 //         setUser({...user,
@@ -65,9 +72,49 @@
 //     )
 // }
 // export {Login};
- const Login = ()=>{
+type ChildComponentProps = {
+    setAuthentication: React.Dispatch<React.SetStateAction<Auth>>;
+  };
+    
+ const Login:React.FC<ChildComponentProps> = ({setAuthentication})=>{
+    const navigate = useNavigate();
+    const [user,setUser] = useState<user>({
+        username:"",
+        password:""
+    })
+    const handleInput= async(event: React.ChangeEvent<HTMLInputElement>)=>{
+        setUser({...user,
+            [event.target.name]:event.target.value
+        })
+        // let a:any=setAuthenticate;
+    }
+    const handleForm = ()=>{
+        login().then(({isAuthenticated,rol})=>{
+            if(isAuthenticated){
+                setAuthentication({isAuthenticated,rol});
+                navigate("/dashboard")
+            }
+        })
+    }
     return <>
-        <h1>Login</h1>
+        <div>
+            <h3 className="title_auth">Login</h3>
+        </div>
+        <form onSubmit={handleForm}>
+            <div>
+                <input onChange={handleInput} id="username" name="username" placeholder="Usuario" type="text" className="loginput" />
+            </div>
+            <div>
+                <input onChange={handleInput} id="password" name="password" placeholder="Contraseña" type="password" className="loginput" />
+            </div>
+            <div>
+                <Link className='recovery_text' to="recovery">¿Olvidaste tu contraseña?</Link>
+            </div>    
+            <div className='input_space'>
+                 <input className="buttons_input" type='submit'/>
+                 <Link to="/auth/register" className='buttons_link'>Registrar</Link>
+            </div>
+        </form>
     </>
 }
 export default Login;
