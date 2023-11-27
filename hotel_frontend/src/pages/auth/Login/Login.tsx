@@ -20,10 +20,12 @@
 //     })
 
 import { Link, useNavigate } from "react-router-dom";
-import { login } from "../../../services/userAuth";
-import { Auth } from "../../../models";
+
+import { Auth } from "@/models";
 import { user } from "./models";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { AppContext } from "@/context/AppContext";
+import {login} from "@/services";
 
     
 //     const handleInput= async(event)=>{
@@ -73,10 +75,11 @@ import { useState } from "react";
 // }
 // export {Login};
 type ChildComponentProps = {
-    setAuthentication: React.Dispatch<React.SetStateAction<Auth>>;
+    
   };
     
- const Login:React.FC<ChildComponentProps> = ({setAuthentication})=>{
+ const Login:React.FC<ChildComponentProps> = ()=>{
+    const {setAuth} = useContext(AppContext);
     const navigate = useNavigate();
     const [user,setUser] = useState<user>({
         username:"",
@@ -91,7 +94,7 @@ type ChildComponentProps = {
     const handleForm = ()=>{
         login().then(({isAuthenticated,rol})=>{
             if(isAuthenticated){
-                setAuthentication({isAuthenticated,rol});
+                setAuth({isAuthenticated,rol});
                 navigate("/dashboard")
             }
         })

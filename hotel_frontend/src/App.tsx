@@ -1,4 +1,4 @@
-import {Outlet, Route, Routes} from "react-router-dom";
+import { Outlet, Route, Routes, useNavigate } from "react-router-dom";
 
 // import {Login} from './pages/auth/Login';
 // import { Register } from './pages/auth/Register';
@@ -12,50 +12,42 @@ import {Outlet, Route, Routes} from "react-router-dom";
 // import './App.css'
 // import '../src/css/normalization.css'
 // import { ProtectedRoute } from './components/security/ProtectedRoute'
-import { Suspense, lazy, useEffect, useState } from 'react';
-import {loadable} from 'react-lazily/loadable';
+import { Suspense, lazy, useContext, useEffect, useState } from 'react';
+import { loadable } from 'react-lazily/loadable';
 // import { useNavigate } from 'react-router-dom';
 import React from 'react';
-import {Auth} from "./models/index";
+import { Auth } from "./models/index";
 import { Login, Register } from "./pages";
-// import { Authentication } from './pages/auth/Authentication';
-// import { Inicialization } from './pages/auth/inicialization'
-// import { Dashboard } from './pages/dashboard/Dashboard'
-// import { Login, Register } from "./pages";
+import { ProtectedRoute } from "./components";
+import StateApp from "./context/StateApp";
+import { AppContext } from "./context/AppContext";
+import { login } from "@/services";
 
 
-
-// const Login = lazy(async ()=>({default:(((await import('./pages')).Login))}))
-// const Register = lazy(async ()=>({default:((await import('./pages')).Register)}))
-
-// const {Login,Register} = loadable(()=>import("./pages"), {
-//     fallback: <div>Loading...</div>,
-//   });
-
-
-// const Login = lazy(()=>import('./pages/auth/Login/Login'))
-// const Login = lazy(()=>import('./pages/auth/Login/index'))
-// const Register = lazy(()=>import('./pages/auth/register/Register'));
-
-
-const App = ()=>{
-    const [authentication,setAuthentication] = useState<Auth>(
-        {
-            rol:"",
-            isAuthenticated:false
-        }
-    );
-    
-    return <Routes >
-        {/* <Route index element={<Login />}></Route> */}
-        {/* <Route path="/auth/" element={<Authentication/>}> */}
-            <Route path="/auth/" element={<Outlet/>}>
-                <Route path="login" setAuthentication={setAuthentication}element={<Login />}></Route>
-                <Route path='register' element={<Register/>}></Route>
+const App = () => {
+    const navigate = useNavigate();
+    const {setAuth } = useContext(AppContext);
+    useEffect(() => {
+        login().then(({ isAuthenticated, rol }) => {
+            if (isAuthenticated) {
+                setAuth({ isAuthenticated, rol });
+                navigate("/dashboard")
+            }
+        })
+    }, []);
+    return <StateApp>
+        <Routes >
+            <Route path="/auth/" element={<Outlet />}>
+                <Route path="login" element={<Login />}></Route>
+                <Route path='register' element={<Register />}></Route>
             </Route>
-            
-        {/* </Route> */}
-        
-    </Routes>
+            <Route element={<ProtectedRoute ></ProtectedRoute>}>
+                <Route path="/" element={<Outlet />}>
+                    <Route path="dashboard"></Route>
+                    <Route path="client"></Route>
+                </Route>
+            </Route>
+        </Routes>
+    </StateApp>;
 };
 export default App;
